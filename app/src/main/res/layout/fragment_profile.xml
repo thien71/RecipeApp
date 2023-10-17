@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/green"
+    android:id="@+id/profile_fragment"
+    tools:context=".ProfileFragment">
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tabLayout"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:tabMode="scrollable"
+        />
+
+    <TextView
+        android:id="@+id/name_avatar"
+        android:text="Thiện"
+        android:layout_marginTop="64dp"
+        android:layout_gravity="center"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/profile_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_below="@+id/name_avatar"
+        app:itemBackground="@color/white"
+
+        app:itemIconTint="@color/custom_color_bottom_nav"
+        app:itemTextColor="@color/custom_color_bottom_nav"
+        app:menu="@menu/menu_profile_nav" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/profile_view_pager2"
+        android:layout_below="@+id/profile_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.viewpager2.widget.ViewPager2>
+
+</RelativeLayout>

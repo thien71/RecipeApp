@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_discover"
+        android:icon="@drawable/outline_home_black_24"
+        android:title="@string/action_discover"/>
+
+    <item android:id="@+id/action_community"
+        android:icon="@drawable/groups_24px"
+        android:title="@string/action_community"/>
+
+    <item android:id="@+id/action_profile"
+        android:icon="@drawable/outline_account_circle_black_24"
+        android:title="@string/action_profile"/>
+</menu>

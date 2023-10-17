@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Recipe_App</string>
+
+    <string name="action_discover">Khám phá</string>
+    <string name="action_community">Cộng đồng</string>
+    <string name="action_profile">Cá nhân</string>
+
+    <string name="action_profile_saved">Công thức đã lưu</string>
+    <string name="action_profile_cookbooks">Danh mục đã lưu</string>
+    <string name="action_profile_activity">Hoạt động gần đây</string>
+</resources>
