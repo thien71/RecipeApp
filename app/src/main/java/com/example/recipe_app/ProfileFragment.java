@@ -1,10 +1,14 @@
 package com.example.recipe_app;
 
+import android.content.Intent;
+import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,11 +20,41 @@ public class ProfileFragment extends Fragment {
 
     private BottomNavigationView profileNav;
     private ViewPager2 profileViewPager2;
+    private ImageButton ibtnSetting;
+    private LinearLayout myRated, myTips;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        ibtnSetting = (ImageButton) view.findViewById(R.id.ibtnSetting);
+        myRated = (LinearLayout) view.findViewById(R.id.profile_rated);
+        myTips = (LinearLayout) view.findViewById(R.id.profile_tips);
+
+        myRated.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyRatedActivity.class);
+                startActivity(intent);
+            }
+        });
+        myTips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyTipsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ibtnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //menubottom
         profileNav = (BottomNavigationView) view.findViewById(R.id.profile_bottom_nav);
         profileViewPager2 = (ViewPager2) view.findViewById(R.id.profile_view_pager2);
 

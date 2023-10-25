@@ -1,14 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     tools:context=".ActivityFragment">
 
-    <TextView
-        android:textSize="50sp"
-        android:layout_gravity="center"
-        android:text="Hoạt động"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</FrameLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:id="@+id/txtMyRatings"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:text="Đánh giá của tôi"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:id="@+id/txtMyRatingsNumber"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="(2)"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvMyRatedProfileActivity"
+            android:divider="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_marginBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:id="@+id/txtMyTips"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:text="Mẹo của tôi"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:id="@+id/txtMyTipsNumber"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="(1)"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvMyTipsProfileActivity"
+            android:divider="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_marginBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:id="@+id/txtRecentlyViewed"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:text="Đã xem gần đây"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvRecentlyViewed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

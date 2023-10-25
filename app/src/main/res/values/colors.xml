@@ -8,5 +8,25 @@
     <color name="pink">#FFFF00FF</color>
     <color name="yellow">#FFFFFF00</color>
     <color name="Accent">#fe3f7f</color>
-    <color name="color_selected_bottom_nav">#fe3f7f</color>
+
+    <color name="color_selected_bottom_nav">#EE3A9B</color>
+    <color name="primary_pink">#EE3A9B</color>
+
+    <color name="primary_red_1">#BF2828</color>
+
+    <color name="primary_blue_1">#7BC8E0</color>
+    <color name="primary_blue_2">#C2D9EE</color>
+
+    <color name="primary_green_1">#49BD6A</color>
+
+    <color name="primary_black_a50">#80000000</color>
+    <color name="primary_black_a60">#99000000</color>
+    <color name="primary_black_a70">#B3000000</color>
+    <color name="primary_black_a80">#CC000000</color>
+    <color name="primary_black_2">#202020</color>
+    <color name="primary_white_2">#F0F0F0</color>
+    <color name="primary_white_3">#F9F9F9</color>
+
+
+
 </resources>

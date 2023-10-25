@@ -1,9 +1,396 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".SearchActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/search_bar"
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/ibtnBack"
+            android:layout_weight="3"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@android:color/transparent"
+            android:elevation="1dp"
+            android:layout_gravity="center_vertical|left"
+            android:src="@drawable/baseline_west_24" />
+
+        <LinearLayout
+            android:layout_marginLeft="16dp"
+            android:layout_gravity="right|center_vertical"
+            android:layout_weight="7"
+            android:background="@drawable/search_background"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:elevation="1dp"
+                android:rotation="90"
+                android:src="@drawable/baseline_search_24" />
+
+            <EditText
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:layout_marginLeft="16dp"
+                android:hint="Tìm kiếm"
+                android:textStyle="normal"
+                android:textSize="16dp"
+                android:textColor="@color/primary_black_a70"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:text="Phổ biến"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvSearch"
+                    android:divider="@null"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_marginBottom="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:text="Độ khó"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.wefika.flowlayout.FlowLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Dưới 5 thành phần"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Khó"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Dễ"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Dưới 1 tiếng"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Dưới 15 phút"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Dưới 30 phút"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Dưới 45 phút"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+
+                    </com.wefika.flowlayout.FlowLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginBottom="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:text="Bữa ăn"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.wefika.flowlayout.FlowLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Bữa sáng"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Bữa trưa"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Bữa tối"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Bữa xế"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Tráng miệng"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Đồ uống"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Khai vị"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Nửa buổi"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+
+                    </com.wefika.flowlayout.FlowLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginBottom="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:text="Dịp lễ"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.wefika.flowlayout.FlowLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="BBQ"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Picnic"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Tết Nguyên Đán"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Trung thu"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Giáng sinh"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Tết Dương Lịch"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Lễ tình nhân"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:text="Halloween"
+                            android:background="@drawable/background_button_login"
+                            android:layout_height="wrap_content"/>
+
+                    </com.wefika.flowlayout.FlowLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/primary_white_2"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="8dp"
+    app:cardElevation="4dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:weightSum="10"
+        android:gravity="left"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_weight="8"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtContent"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:text="Bình luận"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:background="@android:color/transparent"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/like_opacity50_16px"/>
+
+                <TextView
+                    android:id="@+id/txtLikeNumber"
+                    android:textColor="@color/primary_black_a60"
+                    android:textSize="12sp"
+                    android:text="Số lượng"
+                    android:textStyle="normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtTenTips"
+                android:textColor="@color/primary_pink"
+                android:textSize="12sp"
+                android:text="Chữ"
+                android:layout_marginBottom="4dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtTimeTips"
+                android:textColor="@color/primary_black_a60"
+                android:textSize="10sp"
+                android:text="3 giờ trước"
+                android:layout_marginBottom="4dp"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgHinhAnhTips"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="32dp"
+            android:layout_weight="2"
+            android:layout_gravity="right"
+            android:src="@drawable/img_sup_banh_bao_chay"
+            android:layout_width="48dp"
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
