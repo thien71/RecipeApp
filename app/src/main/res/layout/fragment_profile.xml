@@ -38,7 +38,7 @@
                     android:id="@+id/ibtnAvatar"
                     android:layout_width="74dp"
                     android:layout_height="74dp"
-                    android:src="@drawable/sadboy" />
+                    android:src="@drawable/img_avatar_1" />
 
                 <TextView
                     android:padding="8dp"
@@ -53,6 +53,33 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:elevation="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:gravity="center"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="-20dp"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/ibtnAuthor"
+                    android:layout_gravity="center|center_vertical"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:elevation="1dp"
+                    android:src="@drawable/baseline_supervisor_account_24" />
+                <TextView
+                    android:textColor="@color/primary_black_a50"
+                    android:textSize="10sp"
+                    android:text="Author"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
             <ImageButton
                 android:id="@+id/ibtnSetting"
                 android:layout_gravity="right|center_vertical"
@@ -62,6 +89,7 @@
                 android:background="@android:color/transparent"
                 android:elevation="1dp"
                 android:src="@drawable/baseline_settings_24" />
+
 
         </FrameLayout>
 

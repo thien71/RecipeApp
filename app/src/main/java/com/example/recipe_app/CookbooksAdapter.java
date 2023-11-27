@@ -27,7 +27,10 @@ public class CookbooksAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Cookbooks getItem(int position) {
+        if (position >= 0 && position < cookbooksList.size()) {
+            return cookbooksList.get(position);
+        }
         return null;
     }
 

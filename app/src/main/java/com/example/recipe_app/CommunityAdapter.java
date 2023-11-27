@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class CommunityAdapter extends BaseAdapter {
         CircleImageView civAvatar;
         ImageButton ibtnLuuLai, ibtnLike;
         TextView txtTenNguoi, txtTenMon, txtSoLike, txtLuuLai, txtSoBinhLuan, txtMoTa;
+        LinearLayout linearSaveCommunity;
     }
     @Override
     public View getView(int position, View view, ViewGroup parent) {
@@ -64,6 +66,7 @@ public class CommunityAdapter extends BaseAdapter {
             holder.txtSoBinhLuan = (TextView) view.findViewById(R.id.txtSoBinhLuanCommunity);
             holder.txtMoTa = (TextView) view.findViewById(R.id.txtMoTaCommunity);
             holder.txtLuuLai = (TextView) view.findViewById(R.id.txtTymCommunity);
+            holder.linearSaveCommunity = (LinearLayout) view.findViewById(R.id.linearSaveCommunity);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -80,6 +83,21 @@ public class CommunityAdapter extends BaseAdapter {
         holder.txtLuuLai.setText(community.getTextIsSaved());
         holder.txtSoBinhLuan.setText(community.getSoBinhLuan()+"");
         holder.txtMoTa.setText(community.getMoTa());
+
+        holder.linearSaveCommunity.setOnClickListener(new View.OnClickListener() {
+            boolean isTym = false;
+            @Override
+            public void onClick(View view) {
+                if(isTym) {
+                    holder.txtLuuLai.setText("Lưu lại");
+                    holder.ibtnLuuLai.setImageResource(R.drawable.baseline_favorite_border_12);
+                } else {
+                    holder.txtLuuLai.setText("Đã lưu");
+                    holder.ibtnLuuLai.setImageResource(R.drawable.baseline_favorite_12);
+                }
+                isTym = !isTym;
+            }
+        });
 
         return view;
     }

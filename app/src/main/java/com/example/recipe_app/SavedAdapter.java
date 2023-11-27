@@ -27,7 +27,10 @@ public class SavedAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Saved getItem(int position) {
+        if (position >= 0 && position < savedList.size()) {
+            return savedList.get(position);
+        }
         return null;
     }
 

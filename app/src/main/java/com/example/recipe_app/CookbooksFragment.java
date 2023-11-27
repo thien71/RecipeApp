@@ -1,5 +1,6 @@
 package com.example.recipe_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,13 @@ public class CookbooksFragment extends Fragment {
         lvCookbooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), arrayCookbooks.get(position).getTen(), Toast.LENGTH_SHORT).show();
+                Cookbooks selectCookbooks = adapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+
+                intent.putExtra("idTenMon", selectCookbooks.getTen());
+                intent.putExtra("idHinh", selectCookbooks.getHinh());
+
+                startActivity(intent);
             }
         });
 

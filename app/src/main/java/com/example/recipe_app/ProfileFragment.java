@@ -20,7 +20,7 @@ public class ProfileFragment extends Fragment {
 
     private BottomNavigationView profileNav;
     private ViewPager2 profileViewPager2;
-    private ImageButton ibtnSetting;
+    private ImageButton ibtnSetting, ibtnAuthor;
     private LinearLayout myRated, myTips;
 
     @Override
@@ -28,9 +28,17 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         ibtnSetting = (ImageButton) view.findViewById(R.id.ibtnSetting);
+        ibtnAuthor = (ImageButton) view.findViewById(R.id.ibtnAuthor);
         myRated = (LinearLayout) view.findViewById(R.id.profile_rated);
         myTips = (LinearLayout) view.findViewById(R.id.profile_tips);
 
+        ibtnAuthor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AuthorActivity.class);
+                startActivity(intent);
+            }
+        });
         myRated.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

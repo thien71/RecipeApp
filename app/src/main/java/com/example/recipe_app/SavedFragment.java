@@ -44,7 +44,13 @@ public class SavedFragment extends Fragment {
         grvSaved.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), arraySaved.get(position).getTen(), Toast.LENGTH_SHORT).show();
+                Saved selectSaved = adapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+
+                intent.putExtra("idTenMon", selectSaved.getTen());
+                intent.putExtra("idHinh", selectSaved.getHinh());
+
+                startActivity(intent);
             }
         });
 

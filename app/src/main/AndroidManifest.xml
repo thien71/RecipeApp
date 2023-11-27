@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Recipe_App"
         tools:targetApi="34">
         <activity
+            android:name=".AuthorActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChatboxActivity"
             android:exported="false" />
         <activity
