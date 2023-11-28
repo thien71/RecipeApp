@@ -1,7 +1,7 @@
 package com.example.recipe_app.model;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class NguoiDung {
     private String maNguoiDung;

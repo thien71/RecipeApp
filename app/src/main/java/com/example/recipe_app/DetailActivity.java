@@ -1,24 +1,45 @@
 package com.example.recipe_app;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recipe_app.adapter.NguyenLieuAdapter;
+import com.example.recipe_app.model.NguyenLieu;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
     ImageView imgHinh;
     ImageButton ibtnBackDetail, ibtnTymDetail, ibtnAnHienThongTin, ibtnGiamSoLuong, ibtnTangSoLuong;
-    TextView txtTenMonTieuDem, txtTenMon, txtAnHienThongTin, txtSoPhanAnDetail;
+    TextView txtTenMonTieuDem, txtTenMon, txtAnHienThongTin, txtSoPhanAnDetail, txtMoTa;
     EditText edtSoPhanAnDetail;
 
+    WebView webView;
     LinearLayout linearAnHienThongTinDinhDuong, listThongTinDinhDuong;
 
     @Override
@@ -28,14 +49,57 @@ public class DetailActivity extends AppCompatActivity {
 
         Mapping();
 
-        int itemHinh = getIntent().getIntExtra("idHinh", 0);
-        String itemTenMon = getIntent().getStringExtra("idTenMon");
+        int maCongThuc = getIntent().getIntExtra("maCongThuc", 1);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("CongThuc").child(String.valueOf(maCongThuc));
 
-        // Set nội dung cho detail
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String tieuDe = dataSnapshot.child("tieuDe").getValue(String.class);
+                    String moTa = dataSnapshot.child("moTa").getValue(String.class);
+                    String hinh = dataSnapshot.child("duongDanHinhAnh").getValue(String.class);
+                    String linkVideo = dataSnapshot.child("video").child("duongDanVideo").getValue(String.class);
+                    // Sau khi lấy dữ liệu từ Firebase, bạn có thể hiển thị nó trên giao diện của DetailActivity.
+                    txtTenMon.setText(tieuDe);
+                    txtTenMonTieuDem.setText(tieuDe);
+                    txtMoTa.setText(moTa);
+                    //Picasso.get().load(hinh).into(imgHinh);
 
-        imgHinh.setImageResource(itemHinh);
-        txtTenMon.setText(itemTenMon);
-        txtTenMonTieuDem.setText(itemTenMon);
+                    webView.loadData(linkVideo, "text/html", "utf-8");
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    webView.setWebChromeClient(new WebChromeClient());
+
+                    //nguyenlieu
+                    List<NguyenLieu> nguyenLieuList = new ArrayList<>();
+
+                    for (DataSnapshot nguyenLieuSnapshot : dataSnapshot.child("nguyenLieu").getChildren()) {
+                        String tenNguyenLieu = nguyenLieuSnapshot.child("tenNguyenLieu").getValue(String.class);
+                        int soLuong = nguyenLieuSnapshot.child("soLuong").getValue(Integer.class);
+                        String donVi = nguyenLieuSnapshot.child("donVi").getValue(String.class);
+
+                        Log.d("THIEN", soLuong+"");
+
+                        // Tạo đối tượng NguyenLieu từ thông tin lấy được và thêm vào List
+                        NguyenLieu nguyenLieu = new NguyenLieu(tenNguyenLieu, soLuong, donVi);
+                        nguyenLieuList.add(nguyenLieu);
+                    }
+
+                    RecyclerView recyclerViewNguyenLieu = findViewById(R.id.rcvNguyenLieu);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(DetailActivity.this);
+                    recyclerViewNguyenLieu.setLayoutManager(layoutManager);
+
+                    NguyenLieuAdapter nguyenLieuAdapter = new NguyenLieuAdapter(nguyenLieuList);
+                    recyclerViewNguyenLieu.setAdapter(nguyenLieuAdapter);
+
+                } else {
+
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
         ibtnBackDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +120,6 @@ public class DetailActivity extends AppCompatActivity {
                 isTym = !isTym;
             }
         });
-
-        // Tăng giảm số lượng
 
         ibtnGiamSoLuong.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,9 +178,11 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void Mapping() {
-        imgHinh = (ImageView) findViewById(R.id.imgHinhDetail);
+        //imgHinh = (ImageView) findViewById(R.id.imgHinhDetail);
         txtTenMon = (TextView) findViewById(R.id.txtTenMonDetail);
         txtTenMonTieuDem = (TextView) findViewById(R.id.txtTenMonDetailTopic);
+        txtMoTa = (TextView) findViewById(R.id.txtMoTaDetail);
+        webView = (WebView) findViewById(R.id.webView);
 
         ibtnBackDetail = (ImageButton) findViewById(R.id.ibtnBackDetail);
         ibtnTymDetail = (ImageButton) findViewById(R.id.ibtnTymDetail);

@@ -2,6 +2,7 @@ package com.example.recipe_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,23 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class HomeFragment extends Fragment {
 
@@ -44,8 +55,10 @@ public class HomeFragment extends Fragment {
         search_bar = (LinearLayout) view.findViewById(R.id.search_bar);
         home_chat = (LinearLayout) view.findViewById(R.id.home_chat);
 
-        // Home Chat
+        //Toast.makeText(getContext(), getHomeRecommendedList().get(0).getTen(), Toast.LENGTH_SHORT).show();
 
+
+        // Home Chat
         home_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,8 +94,7 @@ public class HomeFragment extends Fragment {
                 HomeRecommended selectHomeRecommended = homeRecommendedAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
 
-                intent.putExtra("idTenMon", selectHomeRecommended.getTen());
-                intent.putExtra("idHinh", selectHomeRecommended.getHinh());
+                intent.putExtra("maCongThuc", selectHomeRecommended.getMaCongThuc());
 
                 startActivity(intent);
             }
@@ -121,7 +133,7 @@ public class HomeFragment extends Fragment {
         rcvHomeTreding.setFocusable(false);
         rcvHomeTreding.setNestedScrollingEnabled(false);
 
-        homeTrendingAdapter.setHomeTrending(getHomeTrendingList());
+        homeTrendingAdapter.setHomeTrending(getHomeTrendingList(3));
 
         rcvHomeTreding.setAdapter(homeTrendingAdapter);
 
@@ -137,28 +149,32 @@ public class HomeFragment extends Fragment {
     }
 
     private List<HomeRecommended> getHomeRecommendedList() {
-        List<HomeRecommended> arrayHomeRecommendeds = new ArrayList<>();
+        List<HomeRecommended> arrayHomeRecommendedList = new ArrayList<>();
 
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_my_quang), "Mỳ Quảng"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_banh_mi_cuon_xuc_xich), "Bánh mì xúc xích"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_sup_ga), "Súp gà"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_sua_chuoi), "Sữa chuối"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_ngheu_hap_xa), "Ngheo hấp xả"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_dau_trang_ham_thit), "Đậu hầm thịt"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_bun_mam_nem_thit_luoc), "Bún mắm thịt luộc"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_chao_hen_xao_cay), "Cháo hến"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_banh_chuoi), "Bánh chuối"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_banh_can), "Bánh căn"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_canh_rau), "Canh rau"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_banh_canh_he_phu_yen), "Bánh canh Phú Yên"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_banh_xeo), "Bánh xèo"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_bun_bo_hue), "Bún bò Huế"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_cao_lau), "Cao lầu"));
-        arrayHomeRecommendeds.add(new HomeRecommended((R.drawable.img_com_ga_hoi_an), "Cơm gà"));
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("CongThuc");
 
-        return arrayHomeRecommendeds;
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    int maCongThuc = snapshot.child("maCongThuc").getValue(Integer.class);
+                    String hinh = snapshot.child("duongDanHinhAnh").getValue(String.class);
+                    String tieuDe = snapshot.child("tieuDe").getValue(String.class);
+
+                    HomeRecommended recommended = new HomeRecommended(maCongThuc, hinh, tieuDe);
+                    arrayHomeRecommendedList.add(recommended);
+                }
+                homeRecommendedAdapter.setHomeRecommendedList(arrayHomeRecommendedList);
+                homeRecommendedAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return arrayHomeRecommendedList;
     }
-
     private List<Community> getHomeCommunityList() {
         List<Community> arrayHomeCommunityList = new ArrayList<>();
 
@@ -171,15 +187,41 @@ public class HomeFragment extends Fragment {
 
         return arrayHomeCommunityList;
     }
-    private List<Community> getHomeTrendingList() {
-        List<Community> arrayHomeTrendingList = new ArrayList<>();
+    private List<HomeRecommended> getHomeTrendingList(int soMuc) {
+        List<HomeRecommended> arrayHomeTrendingList = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("CongThuc");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<HomeRecommended> fullList = new ArrayList<>();
 
-        arrayHomeTrendingList.add(new Community((R.drawable.img_com_hen), "Cơm hến"));
-        arrayHomeTrendingList.add(new Community((R.drawable.img_mieng_luon), "Miếng lươn"));
-        arrayHomeTrendingList.add(new Community((R.drawable.img_nem_nuong_nha_trang), "Nem nướng"));
-        arrayHomeTrendingList.add(new Community((R.drawable.img_che_bap), "Chè bắp"));
-        arrayHomeTrendingList.add(new Community((R.drawable.img_banh_beo), "Bánh bèo"));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String hinh = snapshot.child("duongDanHinhAnh").getValue(String.class);
+                    String tieuDe = snapshot.child("tieuDe").getValue(String.class);
 
+                    HomeRecommended recommended = new HomeRecommended(hinh, tieuDe);
+                    fullList.add(recommended);
+                }
+                int listSize = fullList.size();
+
+                if (listSize > 0) {
+                    Random random = new Random();
+                    Set<Integer> selectedIndexes = new HashSet<>();
+
+                    while (selectedIndexes.size() < soMuc) {
+                        int randomIndex = random.nextInt(listSize);
+                        selectedIndexes.add(randomIndex);
+                    }
+
+                    for (Integer index : selectedIndexes) {
+                        arrayHomeTrendingList.add(fullList.get(index));
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
         return arrayHomeTrendingList;
     }
 }

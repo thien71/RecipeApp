@@ -1,5 +1,6 @@
 package com.example.recipe_app;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -34,8 +37,9 @@ public class HomeRecommendedAdapter extends RecyclerView.Adapter<HomeRecommended
         if(homeRecommended == null) {
             return;
         }
+        String duongDanHinhAnh = homeRecommended.getHinh();
+        Picasso.get().load(duongDanHinhAnh).into(holder.imgHinh);
 
-        holder.imgHinh.setImageResource(homeRecommended.getHinh());
         holder.txtTen.setText(homeRecommended.getTen());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

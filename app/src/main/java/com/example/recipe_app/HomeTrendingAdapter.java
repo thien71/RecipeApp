@@ -9,12 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class HomeTrendingAdapter extends RecyclerView.Adapter<HomeTrendingAdapter.HomeTrendingViewHolder>{
-    private List<Community> homeTrendingList;
+    private List<HomeRecommended> homeTrendingList;
 
-    public void setHomeTrending(List<Community> homeTrending) {
+    public void setHomeTrending(List<HomeRecommended> homeTrending) {
         this.homeTrendingList = homeTrending;
         notifyDataSetChanged();
     }
@@ -29,13 +31,14 @@ public class HomeTrendingAdapter extends RecyclerView.Adapter<HomeTrendingAdapte
 
     @Override
     public void onBindViewHolder(@NonNull HomeTrendingViewHolder holder, int position) {
-        Community homeTrending = homeTrendingList.get(position);
+        HomeRecommended homeTrending = homeTrendingList.get(position);
         if(homeTrending == null) {
             return;
         }
 
-        holder.imgHinh.setImageResource(homeTrending.getHinh());
-        holder.txtTen.setText(homeTrending.getTenMon());
+        String duongDanHinhAnh = homeTrending.getHinh();
+        Picasso.get().load(duongDanHinhAnh).into(holder.imgHinh);
+        holder.txtTen.setText(homeTrending.getTen());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
