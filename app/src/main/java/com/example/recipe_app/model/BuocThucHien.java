@@ -7,6 +7,10 @@ public class BuocThucHien {
     public BuocThucHien() {
     }
 
+    public BuocThucHien(String moTa) {
+        this.moTa = moTa;
+    }
+
     public BuocThucHien(int maBuoc, String moTa) {
         this.maBuoc = maBuoc;
         this.moTa = moTa;

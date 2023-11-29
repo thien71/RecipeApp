@@ -20,8 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recipe_app.adapter.BuocThucHienAdapter;
 import com.example.recipe_app.adapter.NguyenLieuAdapter;
+import com.example.recipe_app.model.BuocThucHien;
 import com.example.recipe_app.model.NguyenLieu;
+import com.example.recipe_app.model.ThongTinDinhDuong;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,15 +36,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-
     ImageView imgHinh;
     ImageButton ibtnBackDetail, ibtnTymDetail, ibtnAnHienThongTin, ibtnGiamSoLuong, ibtnTangSoLuong;
     TextView txtTenMonTieuDem, txtTenMon, txtAnHienThongTin, txtSoPhanAnDetail, txtMoTa;
+    TextView txtCalo, txtProtein, txtChatBeo, txtTinhBot;
     EditText edtSoPhanAnDetail;
-
+    RecyclerView rcvNguyenLieu, rcvBuocTienHanh;
     WebView webView;
     LinearLayout linearAnHienThongTinDinhDuong, listThongTinDinhDuong;
 
+    List<NguyenLieu> nguyenLieuList;
+
+    NguyenLieuAdapter nguyenLieuAdapter;
+
+    int calo, protein, carbohydrate, chatBeo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,39 +66,60 @@ public class DetailActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     String tieuDe = dataSnapshot.child("tieuDe").getValue(String.class);
                     String moTa = dataSnapshot.child("moTa").getValue(String.class);
-                    String hinh = dataSnapshot.child("duongDanHinhAnh").getValue(String.class);
                     String linkVideo = dataSnapshot.child("video").child("duongDanVideo").getValue(String.class);
-                    // Sau khi lấy dữ liệu từ Firebase, bạn có thể hiển thị nó trên giao diện của DetailActivity.
-                    txtTenMon.setText(tieuDe);
-                    txtTenMonTieuDem.setText(tieuDe);
-                    txtMoTa.setText(moTa);
-                    //Picasso.get().load(hinh).into(imgHinh);
 
-                    webView.loadData(linkVideo, "text/html", "utf-8");
-                    webView.getSettings().setJavaScriptEnabled(true);
-                    webView.setWebChromeClient(new WebChromeClient());
-
-                    //nguyenlieu
-                    List<NguyenLieu> nguyenLieuList = new ArrayList<>();
-
+                    //get Nguyenlieu
+                    nguyenLieuList = new ArrayList<>();
                     for (DataSnapshot nguyenLieuSnapshot : dataSnapshot.child("nguyenLieu").getChildren()) {
                         String tenNguyenLieu = nguyenLieuSnapshot.child("tenNguyenLieu").getValue(String.class);
                         int soLuong = nguyenLieuSnapshot.child("soLuong").getValue(Integer.class);
                         String donVi = nguyenLieuSnapshot.child("donVi").getValue(String.class);
 
-                        Log.d("THIEN", soLuong+"");
-
-                        // Tạo đối tượng NguyenLieu từ thông tin lấy được và thêm vào List
                         NguyenLieu nguyenLieu = new NguyenLieu(tenNguyenLieu, soLuong, donVi);
                         nguyenLieuList.add(nguyenLieu);
                     }
+                    // Thông tin dinh dưỡng
+                    DataSnapshot thongTinDinhDuongSnapshot = dataSnapshot.child("thongTinDinhDuong");
+                    calo = thongTinDinhDuongSnapshot.child("calo").getValue(Integer.class);
+                    carbohydrate = thongTinDinhDuongSnapshot.child("carbohydrate").getValue(Integer.class);
+                    chatBeo = thongTinDinhDuongSnapshot.child("chatBeo").getValue(Integer.class);
+                    protein = thongTinDinhDuongSnapshot.child("protein").getValue(Integer.class);
 
-                    RecyclerView recyclerViewNguyenLieu = findViewById(R.id.rcvNguyenLieu);
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(DetailActivity.this);
-                    recyclerViewNguyenLieu.setLayoutManager(layoutManager);
+                    // Bước thực hiện
+                    List<BuocThucHien> buocThucHienList = new ArrayList<>();
+                    for (DataSnapshot buocTienHanhSnapshot : dataSnapshot.child("buocThucHien").getChildren()) {
+                            int maBuoc = buocTienHanhSnapshot.child("maBuoc").getValue(Integer.class);
+                            String moTaBuoc = buocTienHanhSnapshot.child("moTa").getValue(String.class);
 
-                    NguyenLieuAdapter nguyenLieuAdapter = new NguyenLieuAdapter(nguyenLieuList);
-                    recyclerViewNguyenLieu.setAdapter(nguyenLieuAdapter);
+                            BuocThucHien buocThucHien = new BuocThucHien(maBuoc, moTaBuoc);
+                            buocThucHienList.add(buocThucHien);
+                    }
+                    // Sau khi lấy dữ liệu từ Firebase, bạn có thể hiển thị nó trên giao diện của DetailActivity.
+                    txtTenMon.setText(tieuDe);
+                    txtTenMonTieuDem.setText(tieuDe);
+                    txtMoTa.setText(moTa);
+
+                    webView.loadData(linkVideo, "text/html", "utf-8");
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    webView.setWebChromeClient(new WebChromeClient());
+
+                    // Hiển thị Nguyên liệu
+                    LinearLayoutManager nguyenLieuLayoutManager = new LinearLayoutManager(DetailActivity.this);
+                    rcvNguyenLieu.setLayoutManager(nguyenLieuLayoutManager);
+                    nguyenLieuAdapter = new NguyenLieuAdapter(nguyenLieuList);
+                    rcvNguyenLieu.setAdapter(nguyenLieuAdapter);
+
+                    // Thông tin dinh dưỡng
+                    txtCalo.setText(calo + "");
+                    txtProtein.setText(protein + "g");
+                    txtChatBeo.setText(chatBeo + "g");
+                    txtTinhBot.setText(carbohydrate + "g");
+
+                    // Hiển thị Bước thực hiện
+                    LinearLayoutManager buocThucHienLayoutManager = new LinearLayoutManager(DetailActivity.this);
+                    rcvBuocTienHanh.setLayoutManager(buocThucHienLayoutManager);
+                    BuocThucHienAdapter buocThucHienAdapter = new BuocThucHienAdapter(buocThucHienList);
+                    rcvBuocTienHanh.setAdapter(buocThucHienAdapter);
 
                 } else {
 
@@ -100,6 +129,7 @@ public class DetailActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+
 
         ibtnBackDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,14 +150,28 @@ public class DetailActivity extends AppCompatActivity {
                 isTym = !isTym;
             }
         });
-
         ibtnGiamSoLuong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int soPhanAn = Integer.parseInt(String.valueOf(edtSoPhanAnDetail.getText()));
-                soPhanAn -= 1;
-                edtSoPhanAnDetail.setText(soPhanAn +"");
-                txtSoPhanAnDetail.setText(soPhanAn + " phần ăn");
+                if (soPhanAn > 1) {
+                    soPhanAn -= 1;
+
+                    for (NguyenLieu nguyenLieu : nguyenLieuList) {
+                        int soLuongGoc = nguyenLieu.getSoLuongGoc();
+                        int soLuongMoi = soLuongGoc * soPhanAn;
+                        nguyenLieu.setSoLuong(soLuongMoi);
+                    }
+                    nguyenLieuAdapter.notifyDataSetChanged();
+
+                    txtCalo.setText(calo * soPhanAn + "");
+                    txtProtein.setText(protein * soPhanAn + "g");
+                    txtChatBeo.setText(chatBeo * soPhanAn + "g");
+                    txtTinhBot.setText(carbohydrate * soPhanAn + "g");
+
+                    edtSoPhanAnDetail.setText(soPhanAn + "");
+                    txtSoPhanAnDetail.setText(soPhanAn + " phần ăn");
+                }
             }
         });
         ibtnTangSoLuong.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +179,20 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 int soPhanAn = Integer.parseInt(String.valueOf(edtSoPhanAnDetail.getText()));
                 soPhanAn += 1;
-                edtSoPhanAnDetail.setText(soPhanAn +"");
+
+                for (NguyenLieu nguyenLieu : nguyenLieuList) {
+                    int soLuongGoc = nguyenLieu.getSoLuongGoc();
+                    int soLuongMoi = soLuongGoc * soPhanAn;
+                    nguyenLieu.setSoLuong(soLuongMoi);
+                }
+                nguyenLieuAdapter.notifyDataSetChanged();
+
+                txtCalo.setText(calo * soPhanAn + "");
+                txtProtein.setText(protein * soPhanAn + "g");
+                txtChatBeo.setText(chatBeo * soPhanAn + "g");
+                txtTinhBot.setText(carbohydrate * soPhanAn + "g");
+
+                edtSoPhanAnDetail.setText(soPhanAn + "");
                 txtSoPhanAnDetail.setText(soPhanAn + " phần ăn");
             }
         });
@@ -152,9 +209,19 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String soLuong = s.toString();
+                try {
+                    int soPhanAn = Integer.parseInt(s.toString());
 
-                txtSoPhanAnDetail.setText(soLuong + " phần ăn");
+                    for (NguyenLieu nguyenLieu : nguyenLieuList) {
+                        int soLuongGoc = nguyenLieu.getSoLuongGoc();
+                        int soLuongMoi = soLuongGoc * soPhanAn;
+                        nguyenLieu.setSoLuong(soLuongMoi);
+                    }
+                    nguyenLieuAdapter.notifyDataSetChanged();
+                    txtSoPhanAnDetail.setText(soPhanAn + " phần ăn");
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -183,6 +250,15 @@ public class DetailActivity extends AppCompatActivity {
         txtTenMonTieuDem = (TextView) findViewById(R.id.txtTenMonDetailTopic);
         txtMoTa = (TextView) findViewById(R.id.txtMoTaDetail);
         webView = (WebView) findViewById(R.id.webView);
+
+        rcvNguyenLieu = (RecyclerView) findViewById(R.id.rcvNguyenLieu);
+        rcvBuocTienHanh = (RecyclerView) findViewById(R.id.rcvBuocTienHanh);
+
+        txtCalo = (TextView) findViewById(R.id.txtCalo);
+        txtProtein = (TextView) findViewById(R.id.txtProtein);
+        txtChatBeo = (TextView) findViewById(R.id.txtChatBeo);
+        txtTinhBot = (TextView) findViewById(R.id.txtTinhBot);
+
 
         ibtnBackDetail = (ImageButton) findViewById(R.id.ibtnBackDetail);
         ibtnTymDetail = (ImageButton) findViewById(R.id.ibtnTymDetail);

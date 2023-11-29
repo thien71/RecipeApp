@@ -33,7 +33,6 @@ public class NguyenLieuAdapter extends RecyclerView.Adapter<NguyenLieuAdapter.Ng
         NguyenLieu nguyenLieu = nguyenLieuList.get(position);
 
         String tenNguyenLieu = nguyenLieu.getTenNguyenLieu();
-        Log.d("THIEN", tenNguyenLieu);
         String soLuong  = nguyenLieu.getSoLuong()+ " "+ nguyenLieu.getDonVi();
 
         holder.txtTenNguyenLieu.setText(tenNguyenLieu);

@@ -227,7 +227,7 @@
                             android:layout_gravity="left|center_vertical"
                             android:gravity="left"
                             android:lineSpacingExtra="2dp"
-                            android:text="18 phần ăn"
+                            android:text="1 phần ăn"
                             android:textColor="@color/black"
                             android:textSize="14dp"
                             android:textStyle="normal" />
@@ -260,7 +260,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:inputType="number"
-                            android:text="18"
+                            android:text="1"
                             android:textColor="@color/primary_black_a80"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -347,284 +347,139 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:layout_marginTop="0dp"
                     android:id="@+id/listThongTinDinhDuong"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_marginBottom="2dp"
-                            android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
-                            android:weightSum="2"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:gravity="left"
+                            android:text="calo"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
 
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:gravity="left"
-                                android:text="calo"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:text="153"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                        </LinearLayout>
-                        <View
+                        <TextView
+                            android:id="@+id/txtCalo"
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:gravity="right"
+                            android:text="0g"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
                     </LinearLayout>
-
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:layout_marginBottom="2dp"
-                            android:orientation="horizontal"
+                        <TextView
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
-                            android:weightSum="2"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:gravity="left"
+                            android:text="chất đạm"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
 
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:gravity="left"
-                                android:text="chất béo"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:text="12g"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                        </LinearLayout>
-                        <View
+                        <TextView
+                            android:id="@+id/txtProtein"
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:gravity="right"
+                            android:text="0g"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
+
                     </LinearLayout>
-
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:layout_marginBottom="2dp"
-                            android:orientation="horizontal"
+                        <TextView
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
-                            android:weightSum="2"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:gravity="left"
+                            android:text="chất béo"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
 
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:gravity="left"
-                                android:text="tinh bột"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:text="6g"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                        </LinearLayout>
-                        <View
+                        <TextView
+                            android:id="@+id/txtChatBeo"
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:gravity="right"
+                            android:text="0g"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
+
                     </LinearLayout>
-
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
                         android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_marginBottom="2dp"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:weightSum="2"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:gravity="left"
-                                android:text="chất xơ"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:text="0g"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                        </LinearLayout>
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:weightSum="2"
+                        android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:layout_marginBottom="2dp"
-                            android:orientation="horizontal"
+                        <TextView
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
-                            android:weightSum="2"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:gravity="left"
+                            android:text="tinh bột"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
 
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:gravity="left"
-                                android:text="đường"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:text="0g"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                        </LinearLayout>
-                        <View
+                        <TextView
+                            android:id="@+id/txtTinhBot"
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_marginBottom="2dp"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:weightSum="2"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:gravity="left"
-                                android:text="chất đạm"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                            <TextView
-                                android:layout_weight="1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:gravity="right"
-                                android:text="4g"
-                                android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:textStyle="normal" />
-
-                        </LinearLayout>
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:gravity="right"
+                            android:text="0g"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
                     </LinearLayout>
 
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -641,7 +496,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="0dp"
                     android:weightSum="10">
 
                     <TextView
@@ -659,143 +514,10 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvBuocTienHanh"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center_vertical"
-                            android:gravity="left"
-                            android:text="1. Làm nóng tới 220°C"
-                            android:textColor="@color/black"
-                            android:textSize="14dp"
-                            android:layout_marginBottom="4dp"
-                            android:textStyle="normal" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center_vertical"
-                            android:gravity="left"
-                            android:text="2. Cắt miếng bánh thành 6, rồi bỏ phô mai lên mỗi lát."
-                            android:textColor="@color/black"
-                            android:textSize="14dp"
-                            android:layout_marginBottom="4dp"
-                            android:textStyle="normal" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center_vertical"
-                            android:gravity="left"
-                            android:text="3. Đặt xúc xích lên miếng phô mai rồi cuộn lại"
-                            android:textColor="@color/black"
-                            android:textSize="14dp"
-                            android:layout_marginBottom="4dp"
-                            android:textStyle="normal" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center_vertical"
-                            android:gravity="left"
-                            android:text="4. Cắt mỗii cuộn thành 3 miếng rồi gọn gàng trên dĩa"
-                            android:textColor="@color/black"
-                            android:textSize="14dp"
-                            android:layout_marginBottom="4dp"
-                            android:textStyle="normal" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center_vertical"
-                            android:gravity="left"
-                            android:text="5. Nướng 15 phút, cho đến khi có màu vàng nâu. Kết thúc"
-                            android:textColor="@color/black"
-                            android:textSize="14dp"
-                            android:layout_marginBottom="4dp"
-                            android:textStyle="normal" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="#ccc" />
-                    </LinearLayout>
-
-                </LinearLayout>
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 

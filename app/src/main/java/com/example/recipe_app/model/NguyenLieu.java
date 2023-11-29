@@ -4,6 +4,7 @@ public class NguyenLieu {
     private int maNguyenLieu;
     private String tenNguyenLieu;
     private int soLuong;
+    private int soLuongGoc;
     private String donVi;
 
     public NguyenLieu() {}
@@ -12,6 +13,7 @@ public class NguyenLieu {
         this.tenNguyenLieu = tenNguyenLieu;
         this.soLuong = soLuong;
         this.donVi = donVi;
+        this.soLuongGoc = soLuong;
     }
 
     public NguyenLieu(String tenNguyenLieu, int soLuong) {
@@ -24,6 +26,10 @@ public class NguyenLieu {
         this.tenNguyenLieu = tenNguyenLieu;
         this.soLuong = soLuong;
         this.donVi = donVi;
+    }
+
+    public int getSoLuongGoc() {
+        return soLuongGoc;
     }
 
     public int getMaNguyenLieu() {
