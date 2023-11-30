@@ -10,95 +10,75 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recipe_app.model.BaiDangCongDong;
+import com.example.recipe_app.model.NguoiDung;
+import com.example.recipe_app.model.NguyenLieu;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CommunityAdapter extends BaseAdapter {
-    private Context context;
-    private int layout;
-    private List<Community> communityList;
+public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.BaiDangCongDongViewHolder> {
+    private List<BaiDangCongDong> baiDangCongDongList;
 
-    public CommunityAdapter(Context context, int layout, List<Community> communityList) {
-        this.context = context;
-        this.layout = layout;
-        this.communityList = communityList;
+    public CommunityAdapter(List<BaiDangCongDong> data) {
+        this.baiDangCongDongList = data;
+    }
+
+    public BaiDangCongDongViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_community, parent, false);
+        return new BaiDangCongDongViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return communityList.size();
-    }
+    public void onBindViewHolder(BaiDangCongDongViewHolder holder, int position) {
+        BaiDangCongDong baiDang = baiDangCongDongList.get(position);
+        NguoiDung nguoiDung = baiDang.getNguoiDung();
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
+        if (nguoiDung != null) {
+            String tenNguoiDung = nguoiDung.getTenNguoiDung();
+            String avatar = nguoiDung.getAvatar();
+            String tieuDe = baiDang.getTieuDe();
+            String noiDung = baiDang.getNoiDung();
+            String hinh = baiDang.getHinhAnh();
+            int soLike = baiDang.getSoLike();
+            int soBinhLuan = baiDang.getSoBinhLuan();
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+            holder.txtTenNguoiDung.setText(tenNguoiDung);
+            holder.txtTenTieuDe.setText(tieuDe);
+            holder.txtNoiDung.setText(noiDung);
+            holder.txtSoLike.setText(String.valueOf(soLike));
+            holder.txtSoBinhLuan.setText(String.valueOf(soBinhLuan));
 
-    private class ViewHolder {
-        ImageView imgHinh;
-        CircleImageView civAvatar;
-        ImageButton ibtnLuuLai, ibtnLike;
-        TextView txtTenNguoi, txtTenMon, txtSoLike, txtLuuLai, txtSoBinhLuan, txtMoTa;
-        LinearLayout linearSaveCommunity;
-    }
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder;
-
-        if(view == null) {
-            holder = new ViewHolder();
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            view = inflater.inflate(layout, null);
-            holder.imgHinh = (ImageView) view.findViewById(R.id.imgHinhCommunity);
-            holder.civAvatar = (CircleImageView) view.findViewById(R.id.civAvatarCommunity);
-            holder.ibtnLike = (ImageButton) view.findViewById(R.id.ibtnLikeCommunity);
-            holder.ibtnLuuLai = (ImageButton) view.findViewById(R.id.ibtnTymCommunity);
-            holder.txtTenNguoi = (TextView) view.findViewById(R.id.txtTenNguoiCommunity);
-            holder.txtTenMon = (TextView) view.findViewById(R.id.txtTenMonCommunity);
-            holder.txtSoLike = (TextView) view.findViewById(R.id.txtSoLuongLikeCommunity);
-            holder.txtSoBinhLuan = (TextView) view.findViewById(R.id.txtSoBinhLuanCommunity);
-            holder.txtMoTa = (TextView) view.findViewById(R.id.txtMoTaCommunity);
-            holder.txtLuuLai = (TextView) view.findViewById(R.id.txtTymCommunity);
-            holder.linearSaveCommunity = (LinearLayout) view.findViewById(R.id.linearSaveCommunity);
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
+            Picasso.get().load(hinh).into(holder.imgHinh);
+            Picasso.get().load(avatar).into(holder.cirAvatar);
         }
 
-        Community community = communityList.get(position);
-        holder.imgHinh.setImageResource(community.getHinh());
-        holder.civAvatar.setImageResource(community.getAvatar());
-        holder.ibtnLuuLai.setImageResource(community.getHinhIsSaved());
-        holder.ibtnLike.setImageResource(community.getIsLiked());
-        holder.txtTenNguoi.setText(community.getTenNguoi());
-        holder.txtTenMon.setText(community.getTenMon());
-        holder.txtSoLike.setText(community.getSoLike()+"");
-        holder.txtLuuLai.setText(community.getTextIsSaved());
-        holder.txtSoBinhLuan.setText(community.getSoBinhLuan()+"");
-        holder.txtMoTa.setText(community.getMoTa());
+    }
+    @Override
+    public int getItemCount() {
+        return baiDangCongDongList.size();
+    }
 
-        holder.linearSaveCommunity.setOnClickListener(new View.OnClickListener() {
-            boolean isTym = false;
-            @Override
-            public void onClick(View view) {
-                if(isTym) {
-                    holder.txtLuuLai.setText("Lưu lại");
-                    holder.ibtnLuuLai.setImageResource(R.drawable.baseline_favorite_border_12);
-                } else {
-                    holder.txtLuuLai.setText("Đã lưu");
-                    holder.ibtnLuuLai.setImageResource(R.drawable.baseline_favorite_12);
-                }
-                isTym = !isTym;
-            }
-        });
+    public static class BaiDangCongDongViewHolder extends RecyclerView.ViewHolder {
+        TextView txtTenNguoiDung, txtTenTieuDe, txtNoiDung, txtSoLike, txtSoBinhLuan;
+        CircleImageView cirAvatar;
+        ImageView imgHinh;
 
-        return view;
+        public BaiDangCongDongViewHolder(View itemView) {
+            super(itemView);
+            txtTenNguoiDung = itemView.findViewById(R.id.txtTenNguoiDungCommunity);
+            txtTenTieuDe = itemView.findViewById(R.id.txtTenTieuDeCommunity);
+            txtNoiDung = itemView.findViewById(R.id.txtNoiDungCommunity);
+            txtSoLike = itemView.findViewById(R.id.txtSoLikeCommunity);
+            txtSoBinhLuan = itemView.findViewById(R.id.txtSoBinhLuanCommunity);
+
+            imgHinh = itemView.findViewById(R.id.imgHinhCommunity);
+            cirAvatar = itemView.findViewById(R.id.civAvatarCommunity);
+        }
     }
 }

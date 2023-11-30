@@ -4,15 +4,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NguoiDung {
-    private String maNguoiDung;
+    private int maNguoiDung;
+    private String tenNguoiDung;
     private String tenDangNhap;
     private String matKhau;
+    private String avatar;
     private String ngayTao;
     private int quyen;
     public NguoiDung() {
 
     }
-    public NguoiDung(String maNguoiDung, String tenDangNhap, String matKhau) {
+
+    public NguoiDung(String tenNguoiDung, String avatar) {
+        this.tenNguoiDung = tenNguoiDung;
+        this.avatar = avatar;
+    }
+
+    public NguoiDung(int maNguoiDung, String tenDangNhap, String matKhau) {
         this.maNguoiDung = maNguoiDung;
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
@@ -21,11 +29,22 @@ public class NguoiDung {
         this.ngayTao = sdf.format(new Date());
     }
 
-    public String getMaNguoiDung() {
+    public NguoiDung(int maNguoiDung, String tenNguoiDung, String tenDangNhap, String matKhau, String avatar, int quyen) {
+        this.maNguoiDung = maNguoiDung;
+        this.tenNguoiDung = tenNguoiDung;
+        this.tenDangNhap = tenDangNhap;
+        this.matKhau = matKhau;
+        this.avatar = avatar;
+        this.quyen = quyen;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        this.ngayTao = sdf.format(new Date());
+    }
+
+    public int getMaNguoiDung() {
         return maNguoiDung;
     }
 
-    public void setMaNguoiDung(String maNguoiDung) {
+    public void setMaNguoiDung(int maNguoiDung) {
         this.maNguoiDung = maNguoiDung;
     }
 
@@ -35,6 +54,22 @@ public class NguoiDung {
 
     public void setTenDangNhap(String tenDangNhap) {
         this.tenDangNhap = tenDangNhap;
+    }
+
+    public String getTenNguoiDung() {
+        return tenNguoiDung;
+    }
+
+    public void setTenNguoiDung(String tenNguoiDung) {
+        this.tenNguoiDung = tenNguoiDung;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getMatKhau() {

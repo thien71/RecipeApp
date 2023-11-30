@@ -67,7 +67,7 @@ public class SignupActivity extends AppCompatActivity {
                             }
                         }
                         if (!isUserExists) {
-                            String maNguoiDung = String.valueOf(dataSnapshot.getChildrenCount() + 1);
+                            int maNguoiDung = Integer.valueOf((int) (dataSnapshot.getChildrenCount() + 1));
                             NguoiDung nguoiDung = new NguoiDung(maNguoiDung, taiKhoan, matKhau);
                             usersRef.child(String.valueOf(maNguoiDung)).setValue(nguoiDung);
 

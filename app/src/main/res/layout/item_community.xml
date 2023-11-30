@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/txtTenNguoiCommunity"
+                        android:id="@+id/txtTenNguoiDungCommunity"
                         android:textSize="12sp"
                         android:textStyle="normal"
                         android:textColor="@color/primary_pink"
@@ -95,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
-                        android:id="@+id/txtTenMonCommunity"
+                        android:id="@+id/txtTenTieuDeCommunity"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/primary_pink"
@@ -107,7 +107,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txtMoTaCommunity"
+                android:id="@+id/txtNoiDungCommunity"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:textSize="14sp"
@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/txtSoLuongLikeCommunity"
+                    android:id="@+id/txtSoLikeCommunity"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/primary_black_a80"

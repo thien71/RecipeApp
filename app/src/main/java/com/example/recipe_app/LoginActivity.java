@@ -10,19 +10,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.recipe_app.model.BuocThucHien;
-import com.example.recipe_app.model.CongThuc;
-import com.example.recipe_app.model.NguyenLieu;
-import com.example.recipe_app.model.ThongTinDinhDuong;
-import com.example.recipe_app.model.Video;
+import com.example.recipe_app.model.DanhMucCongThuc;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edtMatKhau, edtTaiKhoan;

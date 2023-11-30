@@ -8,61 +8,67 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recipe_app.adapter.NguyenLieuAdapter;
+import com.example.recipe_app.model.CongThuc;
+import com.example.recipe_app.model.NguyenLieu;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
-public class SavedAdapter extends BaseAdapter {
-    private Context context;
-    private int layout;
-    private List<Saved> savedList;
+public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.UaThichViewHolder>{
+    private List<CongThuc> uaThichList;
+    private RecyclerViewItemClickListener itemClickListener;
 
-    public SavedAdapter(Context context, int layout, List<Saved> savedList) {
-        this.context = context;
-        this.layout = layout;
-        this.savedList = savedList;
+    public SavedAdapter(List<CongThuc> uaThichList) {
+        this.uaThichList = uaThichList;
+    }
+
+    public void setOnItemClickListener(RecyclerViewItemClickListener listener) {
+        this.itemClickListener = listener;
+    }
+    @NonNull
+    @Override
+    public UaThichViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_saved, parent, false);
+        return new UaThichViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return savedList.size();
+    public void onBindViewHolder(@NonNull UaThichViewHolder holder, int position) {
+        final CongThuc uaThich = uaThichList.get(position);
+
+        String tieuDe = uaThich.getTieuDe();
+        String duongDanHinhAnh = uaThich.getDuongDanHinhAnh();
+
+        holder.txtTieuDe.setText(tieuDe);
+        Picasso.get().load(duongDanHinhAnh).into(holder.imgHinh);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(holder.getAdapterPosition());
+                }
+            }
+        });
     }
 
     @Override
-    public Saved getItem(int position) {
-        if (position >= 0 && position < savedList.size()) {
-            return savedList.get(position);
-        }
-        return null;
+    public int getItemCount() {
+        return uaThichList.size();
     }
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    private class ViewHolder {
+    public static class UaThichViewHolder extends RecyclerView.ViewHolder {
+        TextView txtTieuDe;
         ImageView imgHinh;
-        TextView txtTen;
-    }
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder;
 
-        if(view == null) {
-            holder = new ViewHolder();
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            view = inflater.inflate(layout, null);
-            holder.imgHinh = (ImageView) view.findViewById(R.id.imgHinhAnh);
-            holder.txtTen = (TextView) view.findViewById(R.id.txtTen);
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
+        public UaThichViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtTieuDe = itemView.findViewById(R.id.txtTenUaThich);
+            imgHinh = itemView.findViewById(R.id.imgHinhAnhUaThich);
         }
-
-        Saved saved = savedList.get(position);
-        holder.imgHinh.setImageResource(saved.getHinh());
-        holder.txtTen.setText(saved.getTen());
-
-        return view;
     }
 }

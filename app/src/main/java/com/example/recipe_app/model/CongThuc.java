@@ -20,6 +20,12 @@ public class CongThuc {
 
     public CongThuc() {}
 
+    public CongThuc(int maCongThuc, String tieuDe, String duongDanHinhAnh) {
+        this.maCongThuc = maCongThuc;
+        this.tieuDe = tieuDe;
+        this.duongDanHinhAnh = duongDanHinhAnh;
+    }
+
     public CongThuc(int maCongThuc, int maNguoiDung, String tieuDe, String moTa, String duongDanHinhAnh, int maDanhMucCongThuc, List<NguyenLieu> nguyenLieu, List<BuocThucHien> buocThucHien, Video video, ThongTinDinhDuong thongTinDinhDuong) {
         this.maCongThuc = maCongThuc;
         this.maNguoiDung = maNguoiDung;
@@ -36,6 +42,11 @@ public class CongThuc {
         this.buocThucHien = buocThucHien;
         this.video = video;
         this.thongTinDinhDuong = thongTinDinhDuong;
+    }
+
+    public CongThuc(String tieuDe, String duongDanHinhAnh) {
+        this.tieuDe = tieuDe;
+        this.duongDanHinhAnh = duongDanHinhAnh;
     }
 
     public int getMaCongThuc() {

@@ -10,45 +10,89 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recipe_app.adapter.BuocThucHienAdapter;
+import com.example.recipe_app.adapter.NguyenLieuAdapter;
+import com.example.recipe_app.model.BaiDangCongDong;
+import com.example.recipe_app.model.NguoiDung;
+import com.example.recipe_app.model.NguyenLieu;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommunityFragment extends Fragment {
-    ListView lvCommunity;
-    ArrayList<Community> arrayCommunity;
-    CommunityAdapter adapter;
-
+    RecyclerView rcvCommunity;
+    CommunityAdapter communityAdapter;
+    List<BaiDangCongDong> baiDangCongDongList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_community, container, false);
 
-        lvCommunity = (ListView) view.findViewById(R.id.lvCommunity);
+        rcvCommunity = view.findViewById(R.id.rcvCommunity);
 
-        arrayCommunity = new ArrayList<>();
-
-        arrayCommunity.add(new Community(R.drawable.img_tom_nhoi_khoai_tay, R.drawable.img_avatar_panda_nam,
-                "Minh Châu", "Tôm nhồi khoai tây", "Một bữa tối đặc biệt với tôm nhồi khoai tây. \uD83C\uDF64\uD83E\uDD54✨ \n" + "\n" + "#ẨmThựcSángTạo #TômKhoaiTâyNgonKhôngTưởng",
-                1, 5, R.drawable.baseline_thumb_up_off_alt_12_black, "Lưu lại", R.drawable.baseline_favorite_border_12));
-        arrayCommunity.add(new Community(R.drawable.img_mi_ong_pho_mai, R.drawable.img_avatar_3,
-                "Sinh Ngô", "Mì ống", "Đêm nay, một phần mì ống phô mai thơm béo đã thổi bay mệt mỏi của ngày làm việc. \uD83E\uDDC0\uD83C\uDF5D✨\n" + "\n#MìỐngPhôMai #MónĂnGâyNghiện.",
-                1, 2, R.drawable.baseline_thumb_up_off_alt_12_black, "Lưu lại", R.drawable.baseline_favorite_border_12));
-        arrayCommunity.add(new Community(R.drawable.img_banh_hamburger, R.drawable.img_avatar_baohong,
-                "Tuấn Nguyễn", "Bánh mì kẹp thịt", "Tối nay, một chiếc bánh hamburger ngon lành đã giúp xua tan mệt mỏi sau một ngày làm việc dài. \uD83C\uDF54\uD83C\uDF5F✨\n"+"\n#BánhHamburger #ThứcĂnBổDưỡng",
-                4, 15, R.drawable.baseline_thumb_up_off_alt_12_black, "Lưu lại", R.drawable.baseline_favorite_border_12));
-        arrayCommunity.add(new Community(R.drawable.img_sua_chuoi, R.drawable.img_avatar_soi,
-                "Duy Vinh", "Sữa chuối", "Hôm nay, một ly sữa chuối mềm mịn đã làm dịu đi cảm xúc và mang lại sự thư giãn sau một ngày làm việc khá căng thẳng. \uD83C\uDF4C\uD83E\uDD5B✨\n" + "\n#SữaChuối #MónYêuCầu",
-                2, 19, R.drawable.baseline_thumb_up_off_alt_12_black, "Lưu lại", R.drawable.baseline_favorite_border_12));
-
-        adapter = new CommunityAdapter(getActivity(), R.layout.item_community, arrayCommunity);
-        lvCommunity.setAdapter(adapter);
-
-        lvCommunity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        DatabaseReference baiDangRef = FirebaseDatabase.getInstance().getReference("BaiDangCongDong");
+        DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung");
+        baiDangRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), arrayCommunity.get(position).getTenMon(), Toast.LENGTH_SHORT).show();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                baiDangCongDongList = new ArrayList<>();
+
+                for (DataSnapshot baiDangSnapshot : dataSnapshot.getChildren()) {
+                    int maNguoiDung = baiDangSnapshot.child("maNguoiDung").getValue(Integer.class);
+                    // Đọc thông tin bài đăng từ node BaiDangCongDong
+
+                    nguoiDungRef.child(String.valueOf(maNguoiDung)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot nguoiDungSnapshot) {
+                            // Lấy thông tin về người dùng từ node NguoiDung
+                            String tenNguoiDung = nguoiDungSnapshot.child("tenNguoiDung").getValue(String.class);
+                            String linkAvatar = nguoiDungSnapshot.child("avatar").getValue(String.class);
+
+                            // Tạo đối tượng NguoiDung
+                            NguoiDung nguoiDung = new NguoiDung(tenNguoiDung, linkAvatar);
+
+                            // Lấy thông tin từ bài đăng
+                            String hinhAnh = baiDangSnapshot.child("hinhAnh").getValue(String.class);
+                            int maBaiDang = Integer.parseInt(baiDangSnapshot.getKey());
+                            String ngayDang = baiDangSnapshot.child("ngayDang").getValue(String.class);
+                            String noiDung = baiDangSnapshot.child("noiDung").getValue(String.class);
+                            int soBinhLuan = baiDangSnapshot.child("soBinhLuan").getValue(Integer.class);
+                            int soLike = baiDangSnapshot.child("soLike").getValue(Integer.class);
+                            String tieuDe = baiDangSnapshot.child("tieuDe").getValue(String.class);
+
+                            // Tạo đối tượng BaiDangCongDong với thông tin người dùng
+                            BaiDangCongDong baiDang = new BaiDangCongDong(maNguoiDung, maBaiDang, tieuDe, noiDung, hinhAnh, soLike, soBinhLuan, nguoiDung);
+                            baiDangCongDongList.add(baiDang);
+
+                            if (baiDangCongDongList.size() == dataSnapshot.getChildrenCount()) {
+                                // Hiển thị danh sách
+                                LinearLayoutManager communityLayoutManager = new LinearLayoutManager(getActivity());
+                                rcvCommunity.setLayoutManager(communityLayoutManager);
+                                communityAdapter = new CommunityAdapter(baiDangCongDongList);
+                                rcvCommunity.setAdapter(communityAdapter);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Xử lý lỗi nếu có
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Xử lý lỗi nếu có
             }
         });
-
         return view;
     }
 }
