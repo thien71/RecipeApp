@@ -31,15 +31,15 @@ public class MyTipsActivity extends AppCompatActivity {
             }
         });
 
-        myTipsAdapter = new MyTipsAdapter();
+//        myTipsAdapter = new MyTipsAdapter();
         LinearLayoutManager myTipsLinearLayoutManager = new LinearLayoutManager(this);
 
         rcvMyTips.setLayoutManager(myTipsLinearLayoutManager);
         rcvMyTips.setFocusable(false);
         rcvMyTips.setNestedScrollingEnabled(false);
 
-        myTipsAdapter.setMyTipsList(getListMyTips());
-
+//        myTipsAdapter.setMyTipsList(getListMyTips());
+//
         rcvMyTips.setAdapter(myTipsAdapter);
 
         myTipsAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
@@ -54,12 +54,12 @@ public class MyTipsActivity extends AppCompatActivity {
         });
     }
 
-    private List<MyTips> getListMyTips() {
-        List<MyTips> arrayMyTips = new ArrayList<>();
-
-        arrayMyTips.add(new MyTips("Tôi nghĩ nên để nó sôi thêm 5 phút nữa.", 0, "Súp bánh bao chay", "3 giờ trước"));
-        arrayMyTips.add(new MyTips("Tôi nghĩ bạn đã cho thừa đường.", 0, "Bánh phô mai", "8 giờ trước", R.drawable.img_banh_pho_mai));
-
-        return arrayMyTips;
-    }
+//    private List<MyTips> getListMyTips() {
+//        List<MyTips> arrayMyTips = new ArrayList<>();
+//
+//        arrayMyTips.add(new MyTips("Tôi nghĩ nên để nó sôi thêm 5 phút nữa.", 0, "Súp bánh bao chay", "3 giờ trước"));
+//        arrayMyTips.add(new MyTips("Tôi nghĩ bạn đã cho thừa đường.", 0, "Bánh phô mai", "8 giờ trước", R.drawable.img_banh_pho_mai));
+//
+//        return arrayMyTips;
+//    }
 }

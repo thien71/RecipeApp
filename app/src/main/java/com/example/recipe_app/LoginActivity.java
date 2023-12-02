@@ -45,7 +45,12 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (tenDangNhap != null && matKhau != null) {
                                 if (tenDangNhap.equals(edtTaiKhoan.getText().toString().trim()) && matKhau.equals(edtMatKhau.getText().toString().trim())) {
+                                    int maNguoiDung = userSnapshot.child("maNguoiDung").getValue(Integer.class);
+                                    int quyen = userSnapshot.child("quyen").getValue(Integer.class);
+
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("maNguoiDung", maNguoiDung);
+                                    intent.putExtra("quyen", quyen);
                                     startActivity(intent);
                                     return;
                                 }

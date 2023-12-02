@@ -44,9 +44,30 @@ public class HomeFragment extends Fragment {
     public void setOnItemClickListener(RecyclerViewItemClickListener listener) {
         this.itemClickListener = listener;
     }
+    public HomeFragment() {
+
+    }
+
+    public static HomeFragment newInstance(int maNguoiDung, int quyen) {
+        HomeFragment fragment = new HomeFragment();
+        Bundle args = new Bundle();
+        args.putInt("maNguoiDung", maNguoiDung);
+        args.putInt("quyen", quyen);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    private int maNguoiDung;
+    private int quyen;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        if (getArguments() != null) {
+            maNguoiDung = getArguments().getInt("maNguoiDung", 1);
+            quyen = getArguments().getInt("quyen", 0);
+            Log.d("HOMETHIEN", maNguoiDung + " _ " + quyen);
+        }
 
         rcvHomeRecommended = (RecyclerView) view.findViewById(R.id.rcvRecommended);
         rcvHomeCommunity = (RecyclerView) view.findViewById(R.id.rcvHomeCommunity);
@@ -224,4 +245,5 @@ public class HomeFragment extends Fragment {
         });
         return arrayHomeTrendingList;
     }
+
 }

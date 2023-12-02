@@ -1,11 +1,15 @@
 package com.example.recipe_app;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,7 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
         setUpViewPager2();
 
+        Intent intent = getIntent();
+        int maNguoiDung = intent.getIntExtra("maNguoiDung", 1);
+        int quyen = intent.getIntExtra("quyen", 0);
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this, maNguoiDung, quyen);
+        mViewPager2.setAdapter(adapter);
     }
+
     private void setUpViewPager2() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         mViewPager2.setAdapter(adapter);

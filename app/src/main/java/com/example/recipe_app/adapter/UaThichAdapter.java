@@ -1,28 +1,26 @@
-package com.example.recipe_app;
+package com.example.recipe_app.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recipe_app.adapter.NguyenLieuAdapter;
+import com.example.recipe_app.R;
+import com.example.recipe_app.RecyclerViewItemClickListener;
 import com.example.recipe_app.model.CongThuc;
-import com.example.recipe_app.model.NguyenLieu;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.UaThichViewHolder>{
+public class UaThichAdapter extends RecyclerView.Adapter<UaThichAdapter.UaThichViewHolder>{
     private List<CongThuc> uaThichList;
     private RecyclerViewItemClickListener itemClickListener;
 
-    public SavedAdapter(List<CongThuc> uaThichList) {
+    public UaThichAdapter(List<CongThuc> uaThichList) {
         this.uaThichList = uaThichList;
     }
 

@@ -2,14 +2,26 @@ package com.example.recipe_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recipe_app.adapter.CookbooksAdapter;
+import com.example.recipe_app.model.BaiDangCongDong;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,117 +30,157 @@ public class ActivityFragment extends Fragment {
 
     private RecyclerView rcvMyRated;
     private RecyclerView rcvMyTips;
-    private RecyclerView rcvReccentlyViewed;
+//    private RecyclerView rcvReccentlyViewed;
+    List<MyRated> danhGiaList;
+    List<MyTips> binhLuanList;
 
     private MyRatedAdapter myRatedAdapter;
     private MyTipsAdapter myTipsAdapter;
-    private MyRecentlyViewedAdapter myRecentlyViewedAdapter;
+//    private MyRecentlyViewedAdapter myRecentlyViewedAdapter;
 
     private RecyclerViewItemClickListener itemClickListener;
     public void setOnItemClickListener(RecyclerViewItemClickListener listener) {
         this.itemClickListener = listener;
     }
+    private int maNguoiDung;
+
+    public ActivityFragment() {
+
+    }
+
+    public static ActivityFragment newInstance(int maNguoiDung) {
+        ActivityFragment fragment = new ActivityFragment();
+        Bundle args = new Bundle();
+        args.putInt("maNguoiDung", maNguoiDung);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_activity, container, false);
+        //rcvReccentlyViewed = (RecyclerView) view.findViewById(R.id.rcvRecentlyViewed);
+
+        if (getArguments() != null) {
+            maNguoiDung = getArguments().getInt("maNguoiDung", 1);
+        }
 
         rcvMyRated = (RecyclerView) view.findViewById(R.id.rcvMyRatedProfileActivity);
         rcvMyTips = (RecyclerView) view.findViewById(R.id.rcvMyTipsProfileActivity);
-        rcvReccentlyViewed = (RecyclerView) view.findViewById(R.id.rcvRecentlyViewed);
+        danhGiaList = new ArrayList<>();
+        binhLuanList = new ArrayList<>();
 
-        // my rated
-        myRatedAdapter = new MyRatedAdapter();
-        LinearLayoutManager myRatedLinearLayoutManager = new LinearLayoutManager(getActivity());
+        fetchDanhGiaList();
 
-        rcvMyRated.setLayoutManager(myRatedLinearLayoutManager);
-        rcvMyRated.setFocusable(false);
-        rcvMyRated.setNestedScrollingEnabled(false);
-
-        myRatedAdapter.setMyRatedList(getListMyRated());
-
-        rcvMyRated.setAdapter(myRatedAdapter);
-
-        myRatedAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(getActivity(), MyRatedActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // my tips
-        myTipsAdapter = new MyTipsAdapter();
-
-        LinearLayoutManager myTipsLinearLayoutManager = new LinearLayoutManager(getActivity());
-
-        rcvMyTips.setLayoutManager(myTipsLinearLayoutManager);
-        rcvMyTips.setFocusable(false);
-        rcvMyTips.setNestedScrollingEnabled(false);
-
-        myTipsAdapter.setMyTipsList(getListMyTips());
-
-        rcvMyTips.setAdapter(myTipsAdapter);
-
-        myTipsAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(getActivity(), MyTipsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // my recently viewed
-
-        myRecentlyViewedAdapter = new MyRecentlyViewedAdapter();
-
-        LinearLayoutManager myRecentlyViewedLinearLayoutManager = new LinearLayoutManager(getActivity());
-
-        myRecentlyViewedLinearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        rcvReccentlyViewed.setLayoutManager(myRecentlyViewedLinearLayoutManager);
-        rcvReccentlyViewed.setFocusable(false);
-        rcvReccentlyViewed.setNestedScrollingEnabled(false);
-
-        myRecentlyViewedAdapter.setMyRecentlyViewedList(getListMyRecentlyViewed());
-
-        rcvReccentlyViewed.setAdapter(myRecentlyViewedAdapter);
-
-        myRecentlyViewedAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Toast.makeText(getActivity(), getListMyRecentlyViewed().get(position).getTen(), Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(getActivity(), MyTipsActivity.class);
-//                startActivity(intent);
-            }
-        });
+        fetchBinhLuanList();
 
         return view;
     }
-    private List<MyRated> getListMyRated() {
-        List<MyRated> arrayMyRated = new ArrayList<>();
-        arrayMyRated.add(new MyRated((R.drawable.img_sup_banh_bao_chay), "Súp bánh bao chay", "3 giờ trước", R.drawable.like));
-        arrayMyRated.add(new MyRated((R.drawable.img_banh_pho_mai), "Bánh phô mai", "5 giờ trước", R.drawable.dislike));
+    private void fetchDanhGiaList() {
+        DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("Like");
 
-        return arrayMyRated;
+        nguoiDungRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    final List<Task<DataSnapshot>> tasks = new ArrayList<>();
+
+                    for (DataSnapshot likeSnapshot : snapshot.getChildren()) {
+                        Object rawValue = likeSnapshot.getValue();
+
+                        if (rawValue != null) {
+                            try {
+                                int maBaiDang = Integer.parseInt(String.valueOf(rawValue));
+                                DatabaseReference baiDangRef = FirebaseDatabase.getInstance().getReference("BaiDangCongDong").child(String.valueOf(maBaiDang));
+                                Task<DataSnapshot> task = baiDangRef.get();
+                                tasks.add(task);
+                            } catch (NumberFormatException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    Task<Void> allTasks = Tasks.whenAll(tasks);
+                    allTasks.addOnSuccessListener(aVoid -> {
+                        for (Task<DataSnapshot> task : tasks) {
+                            DataSnapshot baiDangSnapshot = task.getResult();
+                            if (baiDangSnapshot != null && baiDangSnapshot.exists()) {
+                                String hinhAnh = baiDangSnapshot.child("hinhAnh").getValue(String.class);
+                                String tieuDe = baiDangSnapshot.child("tieuDe").getValue(String.class);
+                                danhGiaList.add(new MyRated(hinhAnh, tieuDe));
+                            }
+                        }
+                        setupRecyclerViewMyRated();
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle onCancelled
+            }
+        });
     }
-    private List<MyTips> getListMyTips() {
-        List<MyTips> arrayMyTips = new ArrayList<>();
 
-        arrayMyTips.add(new MyTips("Tôi nghĩ nên để nó sôi thêm 5 phút nữa.", 0, "Súp bánh bao chay", "3 giờ trước"));
-        arrayMyTips.add(new MyTips("Tôi nghĩ bạn đã cho thừa đường.", 0, "Bánh phô mai", "8 giờ trước", R.drawable.img_banh_pho_mai));
+    private void fetchBinhLuanList() {
+        DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("BinhLuan");
 
-        return arrayMyTips;
+        nguoiDungRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot binhLuanSnapshot : snapshot.getChildren()) {
+                    String noiDung = binhLuanSnapshot.child("noiDungBinhLuan").getValue(String.class);
+                    String thoiGian = binhLuanSnapshot.child("ngayTao").getValue(String.class);
+
+                    Object rawValue = binhLuanSnapshot.child("maBaiDang").getValue();
+                    if (rawValue != null) {
+                        try {
+                            int maBaiDang = Integer.parseInt(String.valueOf(rawValue));
+                            DatabaseReference baiDangRef = FirebaseDatabase.getInstance().getReference("BaiDangCongDong").child(String.valueOf(maBaiDang));
+
+                            baiDangRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot baiDangSnapshot) {
+                                    if (baiDangSnapshot.exists()) {
+                                        String tieuDe = baiDangSnapshot.child("tieuDe").getValue(String.class);
+                                        binhLuanList.add(new MyTips(noiDung, tieuDe, thoiGian));
+                                        setupRecyclerViewMyTips();
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle onCancelled
+            }
+        });
+    }
+    private void setupRecyclerViewMyRated() {
+        LinearLayoutManager danhGiaLayoutManager = new LinearLayoutManager(getActivity());
+        rcvMyRated.setLayoutManager(danhGiaLayoutManager);
+        rcvMyRated.setFocusable(false);
+        rcvMyRated.setNestedScrollingEnabled(false);
+        myRatedAdapter = new MyRatedAdapter(danhGiaList);
+        rcvMyRated.setAdapter(myRatedAdapter);
     }
 
-    private List<MyRecentlyViewed> getListMyRecentlyViewed() {
-        List<MyRecentlyViewed> arrayMyRencentlyViewed = new ArrayList<>();
-
-        arrayMyRencentlyViewed.add(new MyRecentlyViewed((R.drawable.img_mon_ham), "Món hầm"));
-        arrayMyRencentlyViewed.add(new MyRecentlyViewed((R.drawable.img_sup_ga), "Súp gà"));
-        arrayMyRencentlyViewed.add(new MyRecentlyViewed((R.drawable.img_carrot_nuong), "Cà rốt nướng"));
-        arrayMyRencentlyViewed.add(new MyRecentlyViewed((R.drawable.img_banh_pho_mai), "Bánh phô mai"));
-        arrayMyRencentlyViewed.add(new MyRecentlyViewed((R.drawable.img_banh_pho_mai), "Bánh phô mai"));
-
-        return arrayMyRencentlyViewed;
+    private void setupRecyclerViewMyTips() {
+        LinearLayoutManager binhLuanLayoutManager = new LinearLayoutManager(getActivity());
+        rcvMyTips.setLayoutManager(binhLuanLayoutManager);
+        rcvMyTips.setFocusable(false);
+        rcvMyTips.setNestedScrollingEnabled(false);
+        myTipsAdapter = new MyTipsAdapter(binhLuanList);
+        rcvMyTips.setAdapter(myTipsAdapter);
     }
 }

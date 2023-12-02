@@ -5,22 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recipe_app.adapter.BuocThucHienAdapter;
-import com.example.recipe_app.model.BaiDangCongDong;
+import com.example.recipe_app.adapter.UaThichAdapter;
 import com.example.recipe_app.model.CongThuc;
-import com.example.recipe_app.model.NguoiDung;
-import com.example.recipe_app.model.NguyenLieu;
-import com.example.recipe_app.model.UaThich;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SavedFragment extends Fragment {
     ArrayList<CongThuc> uaThichList;
-    SavedAdapter uaThichAdapter;
+    UaThichAdapter uaThichAdapter;
     RecyclerView rcvUaThich;
     DatabaseReference uaThichRef, congThucRef;
     private LinearLayout search_bar_Saved;
@@ -97,7 +89,7 @@ public class SavedFragment extends Fragment {
         GridLayoutManager uaThichLayoutManager = new GridLayoutManager(getActivity(), 2);
         rcvUaThich.setLayoutManager(uaThichLayoutManager);
 
-        uaThichAdapter = new SavedAdapter(uaThichList);
+        uaThichAdapter = new UaThichAdapter(uaThichList);
         rcvUaThich.setFocusable(false);
         rcvUaThich.setNestedScrollingEnabled(false);
         rcvUaThich.setAdapter(uaThichAdapter);

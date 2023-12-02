@@ -4,20 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recipe_app.adapter.BuocThucHienAdapter;
-import com.example.recipe_app.adapter.NguyenLieuAdapter;
+import com.example.recipe_app.adapter.CommunityAdapter;
 import com.example.recipe_app.model.BaiDangCongDong;
 import com.example.recipe_app.model.NguoiDung;
-import com.example.recipe_app.model.NguyenLieu;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +25,13 @@ public class CommunityFragment extends Fragment {
     RecyclerView rcvCommunity;
     CommunityAdapter communityAdapter;
     List<BaiDangCongDong> baiDangCongDongList;
+    public static CommunityFragment newInstance(int quyen) {
+        CommunityFragment fragment = new CommunityFragment();
+        Bundle args = new Bundle();
+        args.putInt("quyen", quyen);
+        fragment.setArguments(args);
+        return fragment;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_community, container, false);
@@ -82,7 +83,7 @@ public class CommunityFragment extends Fragment {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            // Xử lý lỗi nếu có
+
                         }
                     });
                 }

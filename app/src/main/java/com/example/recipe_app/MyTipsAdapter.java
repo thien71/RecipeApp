@@ -9,15 +9,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MyTipsAdapter extends RecyclerView.Adapter<MyTipsAdapter.MyTipsViewHolder>{
 
     private List<MyTips> myTipsList;
+    private RecyclerViewItemClickListener itemClickListener;
 
-    public void setMyTipsList(List<MyTips> myTipsList) {
-        this.myTipsList = myTipsList;
-        notifyDataSetChanged();
+    public MyTipsAdapter(List<MyTips> binhLuanList) {
+        this.myTipsList = binhLuanList;
+    }
+    public void setOnItemClickListener(RecyclerViewItemClickListener listener) {
+        this.itemClickListener = listener;
     }
     @NonNull
     @Override
@@ -34,48 +40,50 @@ public class MyTipsAdapter extends RecyclerView.Adapter<MyTipsAdapter.MyTipsView
         if(myTips == null) {
             return;
         }
+        String tieuDe = myTips.getTen();
+        String noiDung = myTips.getContent();
+        String thoiGian = myTips.getTime();
 
-        holder.txtContent.setText(myTips.getContent());
-        holder.txtLikeNumber.setText(myTips.getLikeNumber()+"");
-        holder.txtTen.setText(myTips.getTen());
-        holder.txtTime.setText(myTips.getTime());
-        holder.imgHinh.setImageResource(myTips.getHinh());
+        holder.txtNoiDung.setText(noiDung);
+        holder.txtTen.setText(tieuDe);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (itemClickListener != null) {
-                    itemClickListener.onItemClick(holder.getAdapterPosition());
-                }
-            }
-        });
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        try {
+            Date ngayDanhGiaDate = sdf.parse(thoiGian);
+            Date gioHienTai = new Date();
+
+            long diffInMilliseconds = gioHienTai.getTime() - ngayDanhGiaDate.getTime();
+            long diffInHours = diffInMilliseconds / (60 * 60 * 1000);
+
+            holder.txtTime.setText(String.valueOf(diffInHours) + " giờ trước");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (itemClickListener != null) {
+//                    itemClickListener.onItemClick(holder.getAdapterPosition());
+//                }
+//            }
+//        });
     }
 
     @Override
     public int getItemCount() {
-        if(myTipsList != null) {
-            return myTipsList.size();
-        }
-        return 0;
+        return myTipsList.size();
     }
 
     public class MyTipsViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgHinh;
-        TextView txtTen, txtTime, txtLikeNumber, txtContent;
+//        ImageView imgHinh;
+        TextView txtTen, txtTime, txtNoiDung;
         public MyTipsViewHolder(@NonNull View view) {
             super(view);
 
-            txtContent = (TextView) view.findViewById(R.id.txtContent);
-            txtLikeNumber = (TextView) view.findViewById(R.id.txtLikeNumber);
+            txtNoiDung = (TextView) view.findViewById(R.id.txtContent);
             txtTen = (TextView) view.findViewById(R.id.txtTenTips);
             txtTime = (TextView) view.findViewById(R.id.txtTimeTips);
-            imgHinh = (ImageView) view.findViewById(R.id.imgHinhAnhTips);
         }
-    }
-    private RecyclerViewItemClickListener itemClickListener;
-
-    public void setOnItemClickListener(RecyclerViewItemClickListener listener) {
-        this.itemClickListener = listener;
     }
 
     public MyTips getItem(int position) {

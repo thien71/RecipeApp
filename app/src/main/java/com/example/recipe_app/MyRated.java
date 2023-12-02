@@ -1,23 +1,33 @@
 package com.example.recipe_app;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MyRated {
-    private int hinh;
+    private String hinh;
     private String ten;
-    private String time;
+    private String ngayDanhGia;
     private int likeOrDislike;
 
-    public MyRated(int hinh, String ten, String time, int likeOrDislike) {
+    public MyRated(String hinh, String ten) {
         this.hinh = hinh;
         this.ten = ten;
-        this.time = time;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        this.ngayDanhGia = sdf.format(new Date());
+    }
+
+    public MyRated(String hinh, String ten, String time, int likeOrDislike) {
+        this.hinh = hinh;
+        this.ten = ten;
+        this.ngayDanhGia = time;
         this.likeOrDislike = likeOrDislike;
     }
 
-    public int getHinh() {
+    public String getHinh() {
         return hinh;
     }
 
-    public void setHinh(int hinh) {
+    public void setHinh(String hinh) {
         this.hinh = hinh;
     }
 
@@ -29,12 +39,12 @@ public class MyRated {
         this.ten = ten;
     }
 
-    public String getTime() {
-        return time;
+    public String getNgayDanhGia() {
+        return ngayDanhGia;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setNgayDanhGia(String ngayDanhGia) {
+        this.ngayDanhGia = ngayDanhGia;
     }
 
     public int getLikeOrDislike() {

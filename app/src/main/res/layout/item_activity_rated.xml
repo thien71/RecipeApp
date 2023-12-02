@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
     app:cardBackgroundColor="@color/white"
-    app:cardUseCompatPadding="true"
     app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -45,7 +45,7 @@
             <TextView
                 android:layout_gravity="left"
                 android:gravity="left"
-                android:id="@+id/txtTen"
+                android:id="@+id/txtTenBaiDang"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:text="Súp bánh bao chay"

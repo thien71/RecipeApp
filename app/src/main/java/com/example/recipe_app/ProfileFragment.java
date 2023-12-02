@@ -3,6 +3,7 @@ package com.example.recipe_app;
 import android.content.Intent;
 import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,14 @@ public class ProfileFragment extends Fragment {
     private ViewPager2 profileViewPager2;
     private ImageButton ibtnSetting, ibtnAuthor;
     private LinearLayout myRated, myTips;
-
+    private int maNguoiDung;
+    public static ProfileFragment newInstance(int maNguoiDung) {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putInt("maNguoiDung", maNguoiDung);
+        fragment.setArguments(args);
+        return fragment;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -67,6 +75,12 @@ public class ProfileFragment extends Fragment {
         profileViewPager2 = (ViewPager2) view.findViewById(R.id.profile_view_pager2);
 
         setUpProfileViewPager2();
+
+        if (getArguments() != null) {
+            maNguoiDung = getArguments().getInt("maNguoiDung", 1);
+        }
+        ProfilePagerAdapter adapter = new ProfilePagerAdapter(this, maNguoiDung);
+        profileViewPager2.setAdapter(adapter);
 
         return view;
     }

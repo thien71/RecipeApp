@@ -1,23 +1,18 @@
-package com.example.recipe_app;
+package com.example.recipe_app.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recipe_app.R;
 import com.example.recipe_app.model.BaiDangCongDong;
 import com.example.recipe_app.model.NguoiDung;
-import com.example.recipe_app.model.NguyenLieu;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
