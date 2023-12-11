@@ -1,8 +1,9 @@
 package com.example.recipe_app.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-public class BaiDangCongDong {
+public class BaiDangCongDong implements Serializable {
     private int maNguoiDung;
     private int maBaiDang;
     private String tieuDe;
@@ -12,8 +13,23 @@ public class BaiDangCongDong {
     private int soLike;
     private int soBinhLuan;
     private NguoiDung nguoiDung;
+    private boolean isLiked = false;
 
     public BaiDangCongDong() {
+    }
+
+    public BaiDangCongDong(int maNguoiDung, int maBaiDang, String tieuDe, String noiDung, String hinhAnh, int soLike, int soBinhLuan, NguoiDung nguoiDung, boolean isLiked) {
+        this.maNguoiDung = maNguoiDung;
+        this.maBaiDang = maBaiDang;
+        this.tieuDe = tieuDe;
+        this.noiDung = noiDung;
+        this.hinhAnh = hinhAnh;
+        this.soLike = soLike;
+        this.soBinhLuan = soBinhLuan;
+        this.nguoiDung = nguoiDung;
+        this.isLiked = isLiked;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        this.ngayDang = sdf.format(new Date());
     }
 
     public BaiDangCongDong(int maNguoiDung, int maBaiDang, String tieuDe, String noiDung, String hinhAnh, int soLike, int soBinhLuan, NguoiDung nguoiDung) {
@@ -49,6 +65,13 @@ public class BaiDangCongDong {
         this.nguoiDung = nguoiDung;
     }
 
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
 
     public int getSoBinhLuan() {
         return soBinhLuan;

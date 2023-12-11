@@ -1,6 +1,7 @@
 package com.example.recipe_app;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,7 +68,6 @@ public class HomeFragment extends Fragment {
         if (getArguments() != null) {
             maNguoiDung = getArguments().getInt("maNguoiDung", 1);
             quyen = getArguments().getInt("quyen", 0);
-            Log.d("HOMETHIEN", maNguoiDung + " _ " + quyen);
         }
 
         rcvHomeRecommended = (RecyclerView) view.findViewById(R.id.rcvRecommended);
@@ -75,9 +76,6 @@ public class HomeFragment extends Fragment {
 
         search_bar = (LinearLayout) view.findViewById(R.id.search_bar);
         home_chat = (LinearLayout) view.findViewById(R.id.home_chat);
-
-        //Toast.makeText(getContext(), getHomeRecommendedList().get(0).getTen(), Toast.LENGTH_SHORT).show();
-
 
         // Home Chat
         home_chat.setOnClickListener(new View.OnClickListener() {
@@ -99,151 +97,316 @@ public class HomeFragment extends Fragment {
 
         // Home Recommended
         homeRecommendedAdapter = new HomeRecommendedAdapter();
-
-        int soCot = 4;
-        GridLayoutManager homeRecommendedGridLayoutManager = new GridLayoutManager (getActivity(), soCot);
-        rcvHomeRecommended.setLayoutManager(homeRecommendedGridLayoutManager);
+        rcvHomeRecommended.setLayoutManager(new GridLayoutManager (getActivity(), 4));
         rcvHomeRecommended.setFocusable(false);
         rcvHomeRecommended.setNestedScrollingEnabled(false);
 
-        homeRecommendedAdapter.setHomeRecommendedList(getHomeRecommendedList());
+        new LoadHomeRecommendedTask().execute();
 
-        rcvHomeRecommended.setAdapter(homeRecommendedAdapter);
-        homeRecommendedAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                HomeRecommended selectHomeRecommended = homeRecommendedAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-
-                intent.putExtra("maCongThuc", selectHomeRecommended.getMaCongThuc());
-
-                startActivity(intent);
-            }
-        });
+//        homeRecommendedAdapter.setHomeRecommendedList(getHomeRecommendedList());
+//        rcvHomeRecommended.setAdapter(homeRecommendedAdapter);
+//        homeRecommendedAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                HomeRecommended selectHomeRecommended = homeRecommendedAdapter.getItem(position);
+//                Intent intent = new Intent(getActivity(), DetailActivity.class);
+//
+//                intent.putExtra("maCongThuc", selectHomeRecommended.getMaCongThuc());
+//
+//                startActivity(intent);
+//            }
+//        });
 
         // Home Community
-
         homeCommunityAdapter = new HomeCommunityAdapter();
-
         LinearLayoutManager homeCommunityLinearLayoutManager = new LinearLayoutManager(getActivity());
-
         homeCommunityLinearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         rcvHomeCommunity.setLayoutManager(homeCommunityLinearLayoutManager);
         rcvHomeCommunity.setFocusable(false);
         rcvHomeCommunity.setNestedScrollingEnabled(false);
 
-        homeCommunityAdapter.setHomeCommunityList(getHomeCommunityList());
+        new LoadHomeCommunityTask().execute();
 
-        rcvHomeCommunity.setAdapter(homeCommunityAdapter);
 
-        homeCommunityAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                startActivity(intent);
-            }
-        });
+//        homeCommunityAdapter.setHomeCommunityList(getHomeCommunityList());
+//        rcvHomeCommunity.setAdapter(homeCommunityAdapter);
+//        homeCommunityAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                Intent intent = new Intent(getActivity(), CommunityFragment.class);
+//                startActivity(intent);
+//            }
+//        });
 
         // My Trending
         homeTrendingAdapter = new HomeTrendingAdapter();
-
         LinearLayoutManager homeTrendingLinearLayoutManager = new LinearLayoutManager(getActivity());
-
         homeTrendingLinearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         rcvHomeTreding.setLayoutManager(homeTrendingLinearLayoutManager);
         rcvHomeTreding.setFocusable(false);
         rcvHomeTreding.setNestedScrollingEnabled(false);
 
-        homeTrendingAdapter.setHomeTrending(getHomeTrendingList(3));
+//        new LoadHomeTrendingTask().execute();
 
-        rcvHomeTreding.setAdapter(homeTrendingAdapter);
-
-        homeTrendingAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                startActivity(intent);
-            }
-        });
+//        homeTrendingAdapter.setHomeTrending(getHomeTrendingList(3));
+//        rcvHomeTreding.setAdapter(homeTrendingAdapter);
+//        homeTrendingAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                Intent intent = new Intent(getActivity(), DetailActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         return view;
     }
 
-    private List<HomeRecommended> getHomeRecommendedList() {
-        List<HomeRecommended> arrayHomeRecommendedList = new ArrayList<>();
+    private class LoadHomeRecommendedTask extends AsyncTask<Void, Void, List<HomeRecommended>> {
+        @Override
+        protected List<HomeRecommended> doInBackground(Void... voids) {
+            List<HomeRecommended> arrayHomeRecommendedList = new ArrayList<>();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("CongThuc");
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference("CongThuc");
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        int maCongThuc = snapshot.child("maCongThuc").getValue(Integer.class);
+                        String hinh = snapshot.child("duongDanHinhAnh").getValue(String.class);
+                        String tieuDe = snapshot.child("tieuDe").getValue(String.class);
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    int maCongThuc = snapshot.child("maCongThuc").getValue(Integer.class);
-                    String hinh = snapshot.child("duongDanHinhAnh").getValue(String.class);
-                    String tieuDe = snapshot.child("tieuDe").getValue(String.class);
-
-                    HomeRecommended recommended = new HomeRecommended(maCongThuc, hinh, tieuDe);
-                    arrayHomeRecommendedList.add(recommended);
-                }
-                homeRecommendedAdapter.setHomeRecommendedList(arrayHomeRecommendedList);
-                homeRecommendedAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return arrayHomeRecommendedList;
-    }
-    private List<Community> getHomeCommunityList() {
-        List<Community> arrayHomeCommunityList = new ArrayList<>();
-
-        arrayHomeCommunityList.add(new Community((R.drawable.img_banh_canh_ca_loc), "Bánh canh cá lóc"));
-        arrayHomeCommunityList.add(new Community((R.drawable.img_lau_tha_phan_thiet), "Lẩu thả Phan Thiết"));
-        arrayHomeCommunityList.add(new Community((R.drawable.img_com_ga_hoi_an), "Cơm gà Hội An"));
-        arrayHomeCommunityList.add(new Community((R.drawable.img_goi_ca_nam_o), "Gỏi cá Nam Ô"));
-        arrayHomeCommunityList.add(new Community((R.drawable.img_canh_kho_qua), "Canh khổ qua"));
-        arrayHomeCommunityList.add(new Community((R.drawable.img_ca_bo_lat_rim), "Cá bò lát rim"));
-
-        return arrayHomeCommunityList;
-    }
-    private List<HomeRecommended> getHomeTrendingList(int soMuc) {
-        List<HomeRecommended> arrayHomeTrendingList = new ArrayList<>();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("CongThuc");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<HomeRecommended> fullList = new ArrayList<>();
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String hinh = snapshot.child("duongDanHinhAnh").getValue(String.class);
-                    String tieuDe = snapshot.child("tieuDe").getValue(String.class);
-
-                    HomeRecommended recommended = new HomeRecommended(hinh, tieuDe);
-                    fullList.add(recommended);
-                }
-                int listSize = fullList.size();
-
-                if (listSize > 0) {
-                    Random random = new Random();
-                    Set<Integer> selectedIndexes = new HashSet<>();
-
-                    while (selectedIndexes.size() < soMuc) {
-                        int randomIndex = random.nextInt(listSize);
-                        selectedIndexes.add(randomIndex);
+                        HomeRecommended recommended = new HomeRecommended(maCongThuc, hinh, tieuDe);
+                        arrayHomeRecommendedList.add(recommended);
                     }
-
-                    for (Integer index : selectedIndexes) {
-                        arrayHomeTrendingList.add(fullList.get(index));
-                    }
+                    homeRecommendedAdapter.setHomeRecommendedList(arrayHomeRecommendedList);
+                    homeRecommendedAdapter.notifyDataSetChanged();
                 }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-        return arrayHomeTrendingList;
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+
+            return arrayHomeRecommendedList;
+        }
+        @Override
+        protected void onPostExecute(List<HomeRecommended> homeRecommendedList) {
+            super.onPostExecute(homeRecommendedList);
+
+            homeRecommendedAdapter.setHomeRecommendedList(homeRecommendedList);
+            rcvHomeRecommended.setAdapter(homeRecommendedAdapter);
+            homeRecommendedAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    HomeRecommended selectHomeRecommended = homeRecommendedAdapter.getItem(position);
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.putExtra("maCongThuc", selectHomeRecommended.getMaCongThuc());
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
+    private class LoadHomeCommunityTask extends AsyncTask<Void, Void, List<Community>> {
+        @Override
+        protected List<Community> doInBackground(Void... voids) {
+            List<Community> arrayHomeCommunityList = new ArrayList<>();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("BaiDangCongDong");
+
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String hinh = snapshot.child("hinhAnh").getValue(String.class);
+                        String tieuDe = snapshot.child("tieuDe").getValue(String.class);
+
+                        Community community = new Community(hinh, tieuDe);
+                        arrayHomeCommunityList.add(community);
+                    }
+                    homeCommunityAdapter.setHomeCommunityList(arrayHomeCommunityList);
+                    homeCommunityAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+
+            return arrayHomeCommunityList;
+        }
+        @Override
+        protected void onPostExecute(List<Community> homeCommunityList) {
+            super.onPostExecute(homeCommunityList);
+            homeCommunityAdapter.setHomeCommunityList(homeCommunityList);
+            rcvHomeCommunity.setAdapter(homeCommunityAdapter);
+            homeCommunityAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+//                    CommunityFragment communityFragment = new CommunityFragment();
+//                    FragmentManager fragmentManager = getSupportFragmentManager(); // sử dụng getSupportFragmentManager() nếu bạn đang sử dụng Support Library
+//
+//// Thay thế fragment hiện tại trong container layout (ví dụ, một FrameLayout có id là container_fragment)
+//                    fragmentManager.beginTransaction()
+//                            .replace(R.id.action_community, communityFragment)
+//                            .addToBackStack(null) // Nếu bạn muốn thêm fragment vào back stack
+//                            .commit();
+                }
+            });
+        }
+    }
+
+//    private class LoadHomeTrendingTask extends AsyncTask<Void, Void, List<HomeRecommended>> {
+//        @Override
+//        protected List<HomeRecommended> doInBackground(Void... voids) {
+//            List<HomeRecommended> arrayHomeTrendingList = new ArrayList<>();
+//            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("CongThuc");
+//
+//            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    List<HomeRecommended> fullList = new ArrayList<>();
+//
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                        String hinh = snapshot.child("duongDanHinhAnh").getValue(String.class);
+//                        String tieuDe = snapshot.child("tieuDe").getValue(String.class);
+//
+//                        HomeRecommended recommended = new HomeRecommended(hinh, tieuDe);
+//                        fullList.add(recommended);
+//                    }
+//                    int listSize = fullList.size();
+//
+//                    if (listSize > 0) {
+//                        Random random = new Random();
+//                        Set<Integer> selectedIndexes = new HashSet<>();
+//
+//                        while (selectedIndexes.size() < 3) {
+//                            int randomIndex = random.nextInt(listSize);
+//                            selectedIndexes.add(randomIndex);
+//                        }
+//
+//                        for (Integer index : selectedIndexes) {
+//                            arrayHomeTrendingList.add(fullList.get(index));
+//                        }
+//                    }
+//                    homeTrendingAdapter.setHomeTrending(arrayHomeTrendingList);
+//                    rcvHomeTreding.setAdapter(homeTrendingAdapter);
+//                    homeTrendingAdapter.notifyDataSetChanged();
+//                }
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//                }
+//            });
+//            return arrayHomeTrendingList;
+//        }
+//        @Override
+//        protected void onPostExecute(List<HomeRecommended> homeTrendingList) {
+//            super.onPostExecute(homeTrendingList);
+//            homeTrendingAdapter.setHomeTrending(homeTrendingList);
+//            rcvHomeTreding.setAdapter(homeTrendingAdapter);
+//            homeTrendingAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
+//                @Override
+//                public void onItemClick(int position) {
+//                    HomeRecommended selectedItem = homeTrendingList.get(position);
+//                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+//                    Log.d("MACONGTHUC1", position + "");
+//                    Log.d("MACONGTHUC2", selectedItem.getMaCongThuc() + "");
+//                    intent.putExtra("maCongThuc", selectedItem.getMaCongThuc());
+//                    startActivity(intent);
+//                }
+//            });
+//        }
+//    }
+//
+//    private List<HomeRecommended> getHomeRecommendedList() {
+//        List<HomeRecommended> arrayHomeRecommendedList = new ArrayList<>();
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference reference = database.getReference("CongThuc");
+//
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    int maCongThuc = snapshot.child("maCongThuc").getValue(Integer.class);
+//                    String hinh = snapshot.child("duongDanHinhAnh").getValue(String.class);
+//                    String tieuDe = snapshot.child("tieuDe").getValue(String.class);
+//
+//                    HomeRecommended recommended = new HomeRecommended(maCongThuc, hinh, tieuDe);
+//                    arrayHomeRecommendedList.add(recommended);
+//                }
+//                homeRecommendedAdapter.setHomeRecommendedList(arrayHomeRecommendedList);
+//                homeRecommendedAdapter.notifyDataSetChanged();
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//        return arrayHomeRecommendedList;
+//    }
+//    private List<Community> getHomeCommunityList() {
+//        List<Community> arrayHomeCommunityList = new ArrayList<>();
+//
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference reference = database.getReference("BaiDangCongDong");
+//
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+////                    int maBaiDang = snapshot.child("maBaiDang").getValue(Integer.class);
+//                    String hinh = snapshot.child("hinhAnh").getValue(String.class);
+//                    String tieuDe = snapshot.child("tieuDe").getValue(String.class);
+//
+//                    Community community = new Community(hinh, tieuDe);
+//                    arrayHomeCommunityList.add(community);
+//                }
+//                homeCommunityAdapter.setHomeCommunityList(arrayHomeCommunityList);
+//                homeRecommendedAdapter.notifyDataSetChanged();
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//        return arrayHomeCommunityList;
+//    }
+//    private List<HomeRecommended> getHomeTrendingList(int soMuc) {
+//        List<HomeRecommended> arrayHomeTrendingList = new ArrayList<>();
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("CongThuc");
+//        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                List<HomeRecommended> fullList = new ArrayList<>();
+//
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    String hinh = snapshot.child("duongDanHinhAnh").getValue(String.class);
+//                    String tieuDe = snapshot.child("tieuDe").getValue(String.class);
+//
+//                    HomeRecommended recommended = new HomeRecommended(hinh, tieuDe);
+//                    fullList.add(recommended);
+//                }
+//                int listSize = fullList.size();
+//
+//                if (listSize > 0) {
+//                    Random random = new Random();
+//                    Set<Integer> selectedIndexes = new HashSet<>();
+//
+//                    while (selectedIndexes.size() < soMuc) {
+//                        int randomIndex = random.nextInt(listSize);
+//                        selectedIndexes.add(randomIndex);
+//                    }
+//
+//                    for (Integer index : selectedIndexes) {
+//                        arrayHomeTrendingList.add(fullList.get(index));
+//                    }
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//        return arrayHomeTrendingList;
+//    }
 }

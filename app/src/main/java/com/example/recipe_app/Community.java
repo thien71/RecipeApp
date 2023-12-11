@@ -1,7 +1,7 @@
 package com.example.recipe_app;
 
 public class Community {
-    private int hinh;
+    private String hinh;
     private int avatar;
     private String tenNguoi;
     private String tenMon;
@@ -12,12 +12,12 @@ public class Community {
     private String textIsSaved;
     private int hinhIsSaved;
 
-    public Community(int hinh, String tenMon) {
+    public Community(String hinh, String tenMon) {
         this.hinh = hinh;
         this.tenMon = tenMon;
     }
 
-    public Community(int hinh, int avatar, String tenNguoi, String tenMon, String moTa, int soBinhLuan,
+    public Community(String hinh, int avatar, String tenNguoi, String tenMon, String moTa, int soBinhLuan,
                      int soLike, int isLiked, String textIsSaved, int hinhIsSaved) {
         this.hinh = hinh;
         this.avatar = avatar;
@@ -31,11 +31,11 @@ public class Community {
         this.hinhIsSaved = hinhIsSaved;
     }
 
-    public int getHinh() {
+    public String getHinh() {
         return hinh;
     }
 
-    public void setHinh(int hinh) {
+    public void setHinh(String hinh) {
         this.hinh = hinh;
     }
 

@@ -1,9 +1,10 @@
 package com.example.recipe_app.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class NguoiDung {
+public class NguoiDung implements Serializable {
     private int maNguoiDung;
     private String tenNguoiDung;
     private String tenDangNhap;

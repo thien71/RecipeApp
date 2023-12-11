@@ -521,109 +521,109 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_marginRight="16dp"
-                android:background="@color/primary_blue_2"
-                android:layout_marginLeft="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="16dp"
-                android:paddingRight="32dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            <LinearLayout-->
+<!--                android:layout_marginRight="16dp"-->
+<!--                android:background="@color/primary_blue_2"-->
+<!--                android:layout_marginLeft="16dp"-->
+<!--                android:paddingTop="8dp"-->
+<!--                android:paddingBottom="16dp"-->
+<!--                android:paddingRight="32dp"-->
+<!--                android:orientation="vertical"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-                <TextView
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center_vertical"
-                    android:text="Mẹo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+<!--                <TextView-->
+<!--                    android:layout_marginTop="0dp"-->
+<!--                    android:layout_marginBottom="8dp"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:text="Mẹo"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"/>-->
 
-                <LinearLayout
-                    android:paddingLeft="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+<!--                <LinearLayout-->
+<!--                    android:paddingLeft="16dp"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical">-->
 
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+<!--                    <LinearLayout-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content">-->
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/civAvatarCommunity"
-                            android:layout_width="46dp"
-                            android:background="@drawable/background_avatar"
-                            android:src="@drawable/img_avatar_2"
-                            android:layout_height="46dp"/>
+<!--                        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                            android:id="@+id/civAvatarCommunity"-->
+<!--                            android:layout_width="46dp"-->
+<!--                            android:background="@drawable/background_avatar"-->
+<!--                            android:src="@drawable/img_avatar_2"-->
+<!--                            android:layout_height="46dp"/>-->
 
-                        <LinearLayout
-                            android:layout_marginLeft="8dp"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+<!--                        <LinearLayout-->
+<!--                            android:layout_marginLeft="8dp"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content">-->
 
-                            <TextView
-                                android:id="@+id/txtTenBinhLuan"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/primary_pink"
-                                android:layout_gravity="center_vertical"
-                                android:text="Tấn Tuấn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+<!--                            <TextView-->
+<!--                                android:id="@+id/txtTenBinhLuan"-->
+<!--                                android:textSize="14sp"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:textColor="@color/primary_pink"-->
+<!--                                android:layout_gravity="center_vertical"-->
+<!--                                android:text="Tấn Tuấn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"/>-->
 
-                        </LinearLayout>
-                    </LinearLayout>
+<!--                        </LinearLayout>-->
+<!--                    </LinearLayout>-->
 
-                    <TextView
-                        android:id="@+id/txtMoTaCommunity"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:textSize="14sp"
-                        android:textStyle="normal"
-                        android:textColor="@color/black"
-                        android:layout_gravity="center_vertical"
-                        android:text="Tôi nghĩ nên nướng thêm 5 phút nữa."
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtMoTaCommunity"-->
+<!--                        android:layout_marginTop="16dp"-->
+<!--                        android:layout_marginBottom="16dp"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="normal"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:layout_gravity="center_vertical"-->
+<!--                        android:text="Tôi nghĩ nên nướng thêm 5 phút nữa."-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"/>-->
 
-                    <LinearLayout
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+<!--                    <LinearLayout-->
+<!--                        android:layout_gravity="center_vertical"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content">-->
 
-                        <TextView
-                            android:id="@+id/txtXemBinhLuanDetail"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/primary_pink"
-                            android:layout_gravity="center_vertical"
-                            android:text="Xem tất cả các mẹo và ảnh"
-                            android:layout_marginRight="8dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+<!--                        <TextView-->
+<!--                            android:id="@+id/txtXemBinhLuanDetail"-->
+<!--                            android:textSize="18sp"-->
+<!--                            android:textStyle="bold"-->
+<!--                            android:textColor="@color/primary_pink"-->
+<!--                            android:layout_gravity="center_vertical"-->
+<!--                            android:text="Xem tất cả các mẹo và ảnh"-->
+<!--                            android:layout_marginRight="8dp"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"/>-->
 
-                        <ImageButton
-                            android:id="@+id/ibtnXemBinhLuanDetail"
-                            android:layout_gravity="center_vertical|right"
-                            android:gravity="center_vertical"
-                            android:background="@android:color/transparent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/baseline_chevron_right_24"/>
+<!--                        <ImageButton-->
+<!--                            android:id="@+id/ibtnXemBinhLuanDetail"-->
+<!--                            android:layout_gravity="center_vertical|right"-->
+<!--                            android:gravity="center_vertical"-->
+<!--                            android:background="@android:color/transparent"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:src="@drawable/baseline_chevron_right_24"/>-->
 
-                    </LinearLayout>
+<!--                    </LinearLayout>-->
 
-                </LinearLayout>
-            </LinearLayout>
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
 
         </LinearLayout>
 

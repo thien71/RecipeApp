@@ -304,18 +304,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_gravity="left"
-                    android:gravity="left"
-                    android:id="@+id/txtTrending"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:text="Trending"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+<!--                <TextView-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:layout_marginBottom="8dp"-->
+<!--                    android:layout_gravity="left"-->
+<!--                    android:gravity="left"-->
+<!--                    android:id="@+id/txtTrending"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:text="Trending"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"/>-->
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcvTrending"

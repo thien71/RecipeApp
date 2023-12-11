@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class HomeCommunityAdapter extends RecyclerView.Adapter<HomeCommunityAdapter.HomeCommunityViewHolder> {
@@ -34,7 +36,8 @@ public class HomeCommunityAdapter extends RecyclerView.Adapter<HomeCommunityAdap
         if(homeCommunity == null) {
             return;
         }
-        holder.imgHinh.setImageResource(homeCommunity.getHinh());
+
+        Picasso.get().load(homeCommunity.getHinh()).into(holder.imgHinh);
         holder.txtTen.setText(homeCommunity.getTenMon());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +49,6 @@ public class HomeCommunityAdapter extends RecyclerView.Adapter<HomeCommunityAdap
             }
         });
     }
-
     @Override
     public int getItemCount() {
         if(homeCommunityList != null) {
