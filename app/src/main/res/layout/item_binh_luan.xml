@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    app:contentPaddingLeft="16dp"
+    app:contentPaddingRight="16dp"
+    app:contentPaddingBottom="8dp"
+    app:contentPaddingTop="8dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cirAvatarBinhLuan"
+            android:layout_width="46dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/background_avatar"
+            android:src="@drawable/img_avatar_1"
+            android:layout_height="46dp"/>
+
+        <LinearLayout
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:background="@drawable/background_xam_bo_tron"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtTenNguoiDungBinhLuan"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_pink"
+                android:layout_gravity="center_vertical"
+                android:text="Minh Châu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtNoiDungBinhLuan"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"
+                android:text="Tôm nhồi khoai tây"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

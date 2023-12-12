@@ -10,18 +10,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
-
     private BottomNavigationView profileNav;
     private ViewPager2 profileViewPager2;
     private ImageButton ibtnSetting, ibtnAuthor;
+    TextView txtTenNguoiDung;
+    CircleImageView cirAvatar;
+
     private LinearLayout myRated, myTips;
     private int maNguoiDung;
     public static ProfileFragment newInstance(int maNguoiDung) {
@@ -39,6 +50,9 @@ public class ProfileFragment extends Fragment {
         ibtnAuthor = (ImageButton) view.findViewById(R.id.ibtnAuthor);
         myRated = (LinearLayout) view.findViewById(R.id.profile_rated);
         myTips = (LinearLayout) view.findViewById(R.id.profile_tips);
+
+        txtTenNguoiDung = (TextView) view.findViewById(R.id.txtTenNguoiDungProfile);
+        cirAvatar = (CircleImageView) view.findViewById(R.id.cirAvatar);
 
         ibtnAuthor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,9 +90,8 @@ public class ProfileFragment extends Fragment {
 
         setUpProfileViewPager2();
 
-        if (getArguments() != null) {
-            maNguoiDung = getArguments().getInt("maNguoiDung", 1);
-        }
+        LoadNguoiDungData();
+
         ProfilePagerAdapter adapter = new ProfilePagerAdapter(this, maNguoiDung);
         profileViewPager2.setAdapter(adapter);
 
@@ -115,6 +128,31 @@ public class ProfileFragment extends Fragment {
                     profileViewPager2.setCurrentItem(2);
                 }
                 return true;
+            }
+        });
+    }
+
+    private void LoadNguoiDungData() {
+        if (getArguments() != null) {
+            maNguoiDung = getArguments().getInt("maNguoiDung", 1);
+        }
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung));
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String avatar = snapshot.child("avatar").getValue(String.class);
+                    String tenNguoiDung = snapshot.child("tenNguoiDung").getValue(String.class);
+
+                    Picasso.get().load(avatar).into(cirAvatar);
+                    txtTenNguoiDung.setText(tenNguoiDung);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

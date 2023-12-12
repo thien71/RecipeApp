@@ -129,6 +129,7 @@ public class CommunityFragment extends Fragment {
                     BaiDangCongDong baiDangItem = dataList.get(position);
                     Intent intent = new Intent(getActivity(), DetailCommunityActivity.class);
                     intent.putExtra("baiDangItem", baiDangItem);
+                    intent.putExtra("maBaiDang", position);
                     startActivity(intent);
                 }
             });

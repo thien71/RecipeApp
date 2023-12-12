@@ -118,43 +118,43 @@
                     android:textSize="14dp"
                     android:textStyle="normal" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:orientation="horizontal">-->
 
-                    <ImageButton
-                        android:id="@+id/ibtnSoLikeDetail"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_gravity="center_vertical|right"
-                        android:layout_marginRight="8dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/baseline_thumb_up_off_alt_24" />
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/ibtnSoLikeDetail"-->
+<!--                        android:layout_width="12dp"-->
+<!--                        android:layout_height="12dp"-->
+<!--                        android:layout_gravity="center_vertical|right"-->
+<!--                        android:layout_marginRight="8dp"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:src="@drawable/baseline_thumb_up_off_alt_24" />-->
 
-                    <TextView
-                        android:id="@+id/txtSoLikeDetail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="10"
-                        android:layout_marginRight="16dp"
-                        android:textColor="@color/primary_black_a80"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtSoLikeDetail"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_vertical"-->
+<!--                        android:text="10"-->
+<!--                        android:layout_marginRight="16dp"-->
+<!--                        android:textColor="@color/primary_black_a80"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <ImageButton
-                        android:id="@+id/ibtnSoDislike"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_gravity="center_vertical|right"
-                        android:rotation="180"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/baseline_thumb_up_off_alt_24" />
-                </LinearLayout>
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/ibtnSoDislike"-->
+<!--                        android:layout_width="12dp"-->
+<!--                        android:layout_height="12dp"-->
+<!--                        android:layout_gravity="center_vertical|right"-->
+<!--                        android:rotation="180"-->
+<!--                        android:background="@android:color/transparent"-->
+<!--                        android:src="@drawable/baseline_thumb_up_off_alt_24" />-->
+<!--                </LinearLayout>-->
 
             </LinearLayout>
 

@@ -35,12 +35,13 @@
                 android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/ibtnAvatar"
+                    android:id="@+id/cirAvatar"
                     android:layout_width="74dp"
                     android:layout_height="74dp"
-                    android:src="@drawable/img_avatar_1" />
+                    android:src="@drawable/img_banh_mi_cuon_xuc_xich" />
 
                 <TextView
+                    android:id="@+id/txtTenNguoiDungProfile"
                     android:padding="8dp"
                     android:layout_gravity="center"
                     android:gravity="center"
