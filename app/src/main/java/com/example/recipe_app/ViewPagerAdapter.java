@@ -28,7 +28,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 Log.d("VIEW THIEN", maNguoiDung + " " + quyen);
                 return HomeFragment.newInstance(maNguoiDung, quyen);
             case 1:
-                return CommunityFragment.newInstance(quyen);
+                return CommunityFragment.newInstance(maNguoiDung);
             case 2:
                 return ProfileFragment.newInstance(maNguoiDung);
             default:

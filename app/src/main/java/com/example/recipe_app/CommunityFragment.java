@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.recipe_app.adapter.CommunityAdapter;
 import com.example.recipe_app.model.BaiDangCongDong;
@@ -29,11 +30,13 @@ import java.util.List;
 public class CommunityFragment extends Fragment {
     RecyclerView rcvCommunity;
     CommunityAdapter communityAdapter;
+    private int maNguoiDung;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
-    public static CommunityFragment newInstance(int quyen) {
+    public static CommunityFragment newInstance(int maNguoiDung) {
         CommunityFragment fragment = new CommunityFragment();
         Bundle args = new Bundle();
-        args.putInt("quyen", quyen);
+        args.putInt("maNguoiDung", maNguoiDung);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,8 +45,17 @@ public class CommunityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_community, container, false);
 
         rcvCommunity = view.findViewById(R.id.rcvCommunity);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshCommunity);
 
         new LoadCommunityDataTask().execute();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new LoadCommunityDataTask().execute();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         return view;
     }
@@ -126,10 +138,15 @@ public class CommunityFragment extends Fragment {
             communityAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
+                    if (getArguments() != null) {
+                        maNguoiDung = getArguments().getInt("maNguoiDung", 1);
+                    }
+
                     BaiDangCongDong baiDangItem = dataList.get(position);
                     Intent intent = new Intent(getActivity(), DetailCommunityActivity.class);
                     intent.putExtra("baiDangItem", baiDangItem);
                     intent.putExtra("maBaiDang", position);
+                    intent.putExtra("maNguoiDung", maNguoiDung);
                     startActivity(intent);
                 }
             });

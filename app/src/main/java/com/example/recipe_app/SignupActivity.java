@@ -68,7 +68,7 @@ public class SignupActivity extends AppCompatActivity {
                         }
                         if (!isUserExists) {
                             int maNguoiDung = Integer.valueOf((int) (dataSnapshot.getChildrenCount() + 1));
-                            NguoiDung nguoiDung = new NguoiDung(maNguoiDung, taiKhoan, matKhau);
+                            NguoiDung nguoiDung = new NguoiDung(maNguoiDung, taiKhoan, taiKhoan, matKhau, "android.resource://com.example.recipe_app/drawable/img_avatar_default" , 0);
                             usersRef.child(String.valueOf(maNguoiDung)).setValue(nguoiDung);
 
                             Toast.makeText(SignupActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();

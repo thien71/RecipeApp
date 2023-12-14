@@ -37,11 +37,8 @@ public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.BinhLu
         BinhLuan binhLuan = binhLuanList.get(position);
 
         String avatar = binhLuan.getAvatar();
-        Log.d("THANH THIEN 1", avatar);
         String ten = binhLuan.getTenNguoiDung();
-        Log.d("THANH THIEN 2", avatar);
         String noiDung = binhLuan.getNoiDungBinhLuan();
-        Log.d("THANH THIEN 3", avatar);
 
         holder.txtTenNguoiDung.setText(ten);
         holder.txtNoiDungBinhLuan.setText(noiDung);
