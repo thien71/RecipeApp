@@ -20,9 +20,9 @@ public class ProfilePagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new SavedFragment();
+                return SavedFragment.newInstance(maNguoiDung);
             case 1:
-                return new CookbooksFragment();
+                return CookbooksFragment.newInstance(maNguoiDung);
             case 2:
                 return ActivityFragment.newInstance(maNguoiDung);
             default:

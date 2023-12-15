@@ -2,11 +2,13 @@ package com.example.recipe_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,8 +28,16 @@ public class SavedFragment extends Fragment {
     ArrayList<CongThuc> uaThichList;
     UaThichAdapter uaThichAdapter;
     RecyclerView rcvUaThich;
-    DatabaseReference uaThichRef, congThucRef;
     private LinearLayout search_bar_Saved;
+
+    private int maNguoiDung;
+    public static SavedFragment newInstance(int maNguoiDung) {
+        SavedFragment fragment = new SavedFragment();
+        Bundle args = new Bundle();
+        args.putInt("maNguoiDung", maNguoiDung);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,44 +46,44 @@ public class SavedFragment extends Fragment {
         rcvUaThich = (RecyclerView) view.findViewById(R.id.rcvUaThich);
         search_bar_Saved = (LinearLayout) view.findViewById(R.id.search_bar_Saved);
 
-        uaThichRef = FirebaseDatabase.getInstance().getReference("UaThich");
-        uaThichRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        if (getArguments() != null) {
+            maNguoiDung = getArguments().getInt("maNguoiDung", 1);
+        }
+
+        DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("UaThich");
+        nguoiDungRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 uaThichList = new ArrayList<>();
-                int totalItems = (int) dataSnapshot.getChildrenCount();
-                AtomicInteger itemCount = new AtomicInteger();
 
                 for (DataSnapshot uaThichSnapshot : dataSnapshot.getChildren()) {
                     int maCongThuc = uaThichSnapshot.child("maCongThuc").getValue(Integer.class);
 
-                    congThucRef = FirebaseDatabase.getInstance().getReference("CongThuc").child(String.valueOf(maCongThuc));
+                    DatabaseReference congThucRef = FirebaseDatabase.getInstance().getReference("CongThuc").child(String.valueOf(maCongThuc));
                     congThucRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot congThucSnapshot) {
-                            int maCongThuc = congThucSnapshot.child("maCongThuc").getValue(Integer.class);
-                            String tieuDe = congThucSnapshot.child("tieuDe").getValue(String.class);
-                            String duongDanHinhAnh = congThucSnapshot.child("duongDanHinhAnh").getValue(String.class);
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String tieuDe = dataSnapshot.child("tieuDe").getValue(String.class);
+                            String duongDanHinhAnh = dataSnapshot.child("duongDanHinhAnh").getValue(String.class);
 
                             CongThuc congThuc = new CongThuc(maCongThuc, tieuDe, duongDanHinhAnh);
                             uaThichList.add(congThuc);
 
-                            if (itemCount.incrementAndGet() == totalItems) {
-                                setupRecyclerView();
-                            }
+                            setupRecyclerView();
                         }
+
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-
                         }
                     });
                 }
             }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
         // search
         search_bar_Saved.setOnClickListener(new View.OnClickListener() {
             @Override
