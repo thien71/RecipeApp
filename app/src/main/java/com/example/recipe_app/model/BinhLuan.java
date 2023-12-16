@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BinhLuan {
+    private int maNguoiDung;
     private int maBaiDang;
     private int maBinhLuan;
     private String tenNguoiDung;
@@ -26,6 +27,13 @@ public class BinhLuan {
         this.noiDungBinhLuan = noiDungBinhLuan;
     }
 
+    public BinhLuan(int maNguoiDung, String tenNguoiDung, String avatar, String noiDungBinhLuan) {
+        this.maNguoiDung = maNguoiDung;
+        this.tenNguoiDung = tenNguoiDung;
+        this.avatar = avatar;
+        this.noiDungBinhLuan = noiDungBinhLuan;
+    }
+
     public BinhLuan(int maBaiDang, int maBinhLuan, String noiDungBinhLuan) {
         this.maBaiDang = maBaiDang;
         this.maBinhLuan = maBinhLuan;
@@ -35,15 +43,20 @@ public class BinhLuan {
         this.ngayCapNhat = sdf.format(new Date());
     }
 
-    public BinhLuan(int maBaiDang, int maBinhLuan, String tenNguoiDung, String avatar, String noiDungBinhLuan) {
-        this.maBaiDang = maBaiDang;
+    public BinhLuan(int maNguoiDung, int maBinhLuan, String tenNguoiDung, String avatar, String noiDungBinhLuan) {
+        this.maNguoiDung = maNguoiDung;
         this.maBinhLuan = maBinhLuan;
         this.tenNguoiDung = tenNguoiDung;
         this.avatar = avatar;
         this.noiDungBinhLuan = noiDungBinhLuan;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        this.ngayBinhLuan = sdf.format(new Date());
-        this.ngayCapNhat = sdf.format(new Date());
+    }
+
+    public int getMaNguoiDung() {
+        return maNguoiDung;
+    }
+
+    public void setMaNguoiDung(int maNguoiDung) {
+        this.maNguoiDung = maNguoiDung;
     }
 
     public String getNgayCapNhat() {

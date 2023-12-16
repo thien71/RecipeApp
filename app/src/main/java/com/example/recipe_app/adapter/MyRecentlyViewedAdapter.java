@@ -1,4 +1,4 @@
-package com.example.recipe_app;
+package com.example.recipe_app.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recipe_app.MyRecentlyViewed;
+import com.example.recipe_app.R;
+import com.example.recipe_app.RecyclerViewItemClickListener;
 
 import java.util.List;
 

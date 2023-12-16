@@ -1,18 +1,25 @@
 package com.example.recipe_app;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.recipe_app.adapter.BinhLuanAdapter;
 import com.example.recipe_app.model.BaiDangCongDong;
@@ -40,7 +47,11 @@ public class DetailCommunityActivity extends AppCompatActivity {
     BinhLuanAdapter binhLuanAdapter;
     private int maBaiDang;
     private int maNguoiDung;
+    private int maBinhLuanToRemove;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private int selectedPosition = -1;
+    private static final int MENU_EDIT = 0;
+    private static final int MENU_DELETE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +83,7 @@ public class DetailCommunityActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
     }
 
     private void setupRecyclerView() {
@@ -80,6 +92,147 @@ public class DetailCommunityActivity extends AppCompatActivity {
 
         binhLuanAdapter = new BinhLuanAdapter(binhLuanList);
         rcvBinhLuan.setAdapter(binhLuanAdapter);
+
+        binhLuanAdapter.setOnItemLongClickListener(new BinhLuanAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(int position, int userId, int maBinhLuan) {
+                if (maNguoiDung == userId) {
+                    openContextMenu(rcvBinhLuan);
+                    selectedPosition = position;
+                    maBinhLuanToRemove = maBinhLuan;
+                }
+            }
+        });
+
+        registerForContextMenu(rcvBinhLuan);
+
+        rcvBinhLuan.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                getMenuInflater().inflate(R.menu.context_menu, menu);
+            }
+        });
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_edit) {
+            String oldContent = binhLuanList.get(selectedPosition).getNoiDungBinhLuan();
+            showEditCommentDialog(oldContent);
+            return true;
+        } else if (item.getItemId() == R.id.menu_delete) {
+            xoaBinhLuan(selectedPosition);
+            return true;
+        } else {
+            return super.onContextItemSelected(item);
+        }
+    }
+    private void showEditCommentDialog(String oldContent) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Sửa bình luận");
+
+        final EditText editText = new EditText(this);
+        editText.setText(oldContent);
+        builder.setView(editText);
+
+        builder.setPositiveButton("Lưu", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String noiDungMoi = editText.getText().toString();
+                suaNoiDungBinhLuan(maBinhLuanToRemove, noiDungMoi);
+            }
+        });
+
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
+    private void suaNoiDungBinhLuan(int maBinhLuan, String noiDungMoi) {
+        DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung")
+                .child(String.valueOf(maNguoiDung))
+                .child("BinhLuan");
+
+        nguoiDungRef.orderByChild("maBinhLuan").equalTo(maBinhLuan).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot binhLuanSnapshot : dataSnapshot.getChildren()) {
+                    binhLuanSnapshot.getRef().child("noiDungBinhLuan").setValue(noiDungMoi);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        binhLuanList.get(maBinhLuan).setNoiDungBinhLuan(noiDungMoi);
+        binhLuanAdapter.notifyItemChanged(maBinhLuan);
+    }
+
+    private void xoaBinhLuan(int position) {
+        if (position != -1 && position < binhLuanList.size() && maBinhLuanToRemove != -1) {
+            binhLuanList.remove(position);
+            binhLuanAdapter.notifyItemRemoved(position);
+
+            DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung")
+                    .child(String.valueOf(maNguoiDung))
+                    .child("BinhLuan");
+
+            nguoiDungRef.orderByChild("maBinhLuan").equalTo(maBinhLuanToRemove).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot binhLuanSnapshot : dataSnapshot.getChildren()) {
+                        binhLuanSnapshot.getRef().removeValue();
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+
+            int positionToRemove = findPositionByMaBinhLuan(maBinhLuanToRemove);
+            if (positionToRemove != -1) {
+                binhLuanList.remove(positionToRemove);
+                binhLuanAdapter.notifyItemRemoved(positionToRemove);
+            }
+
+            DatabaseReference baiDangRef = FirebaseDatabase.getInstance().getReference("BaiDangCongDong").child(String.valueOf(maBaiDang));
+            baiDangRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        long soBinhLuan = (long) dataSnapshot.child("soBinhLuan").getValue();
+
+                        // Giảm số lượng bình luận đi 1 sau khi xóa
+                        baiDangRef.child("soBinhLuan").setValue(soBinhLuan - 1);
+
+                        loadComments();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            maBinhLuanToRemove = -1;
+        }
+    }
+
+    private int findPositionByMaBinhLuan(int maBinhLuanToRemove) {
+        for (int i = 0; i < binhLuanList.size(); i++) {
+            BinhLuan binhLuan = binhLuanList.get(i);
+            if (binhLuan.getMaBinhLuan() == maBinhLuanToRemove) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void loadComments() {
@@ -93,11 +246,13 @@ public class DetailCommunityActivity extends AppCompatActivity {
                     for (DataSnapshot binhLuanItem : binhLuanSnapshot.getChildren()) {
                         int maBaiDangTrongNode = binhLuanItem.child("maBaiDang").getValue(Integer.class);
                         if (maBaiDangTrongNode == maBaiDang) {
+                            int maNguoiDung = nguoiDungSnapshot.child("maNguoiDung").getValue(Integer.class);
                             String tenNguoiDung = nguoiDungSnapshot.child("tenNguoiDung").getValue(String.class);
                             String avatar = nguoiDungSnapshot.child("avatar").getValue(String.class);
                             String noiDungBinhLuan = binhLuanItem.child("noiDungBinhLuan").getValue(String.class);
+                            int maBinhLuan = binhLuanItem.child("maBinhLuan").getValue(Integer.class);
 
-                            BinhLuan binhLuan = new BinhLuan(tenNguoiDung, avatar, noiDungBinhLuan);
+                            BinhLuan binhLuan = new BinhLuan(maNguoiDung, maBinhLuan ,tenNguoiDung, avatar, noiDungBinhLuan);
                             binhLuanList.add(binhLuan);
                         }
                     }
@@ -184,7 +339,6 @@ public class DetailCommunityActivity extends AppCompatActivity {
             Picasso.get().load(baiDangItem.getHinhAnh()).into(imgHinh);
             Picasso.get().load(baiDangItem.getNguoiDung().getAvatar()).into(cirAvatar);
         }
-
         loadComments();
     }
 
@@ -208,5 +362,6 @@ public class DetailCommunityActivity extends AppCompatActivity {
         ibtnGuiBinhLuan = findViewById(R.id.ibtnGuiBinhLuan);
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshDetailCommunity);
+
     }
 }

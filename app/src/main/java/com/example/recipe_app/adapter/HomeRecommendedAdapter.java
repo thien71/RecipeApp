@@ -1,6 +1,5 @@
-package com.example.recipe_app;
+package com.example.recipe_app.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recipe_app.HomeRecommended;
+import com.example.recipe_app.R;
+import com.example.recipe_app.RecyclerViewItemClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

@@ -85,7 +85,6 @@ public class CommunityFragment extends Fragment {
 
                                 String hinhAnh = baiDangSnapshot.child("hinhAnh").getValue(String.class);
                                 int maBaiDang = Integer.parseInt(baiDangSnapshot.getKey());
-                                String ngayDang = baiDangSnapshot.child("ngayDang").getValue(String.class);
                                 String noiDung = baiDangSnapshot.child("noiDung").getValue(String.class);
                                 int soBinhLuan = baiDangSnapshot.child("soBinhLuan").getValue(Integer.class);
                                 int soLike = baiDangSnapshot.child("soLike").getValue(Integer.class);

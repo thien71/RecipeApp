@@ -19,10 +19,17 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.BinhLuanViewHolder>{
+    public interface OnItemLongClickListener {
+        void onItemLongClick(int position, int userId, int maBinhLuan);
+    }
     private List<BinhLuan> binhLuanList;
+    private OnItemLongClickListener itemLongClickListener;
 
     public BinhLuanAdapter(List<BinhLuan> binhLuanList) {
         this.binhLuanList = binhLuanList;
+    }
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.itemLongClickListener = listener;
     }
 
     @NonNull
@@ -44,6 +51,16 @@ public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.BinhLu
         holder.txtNoiDungBinhLuan.setText(noiDung);
         Picasso.get().load(avatar).into(holder.cirAvatar);
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (itemLongClickListener != null) {
+                    itemLongClickListener.onItemLongClick(holder.getAdapterPosition(), binhLuan.getMaNguoiDung(), binhLuan.getMaBinhLuan());
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
