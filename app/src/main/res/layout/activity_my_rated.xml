@@ -36,7 +36,7 @@
             android:layout_weight="6"
             android:layout_gravity="center|center_vertical"
             android:gravity="center"
-            android:text="Đánh giá của tôi"
+            android:text="Bài viết đã like"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/black"

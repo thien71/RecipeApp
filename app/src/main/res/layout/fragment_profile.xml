@@ -38,7 +38,7 @@
                     android:id="@+id/cirAvatar"
                     android:layout_width="74dp"
                     android:layout_height="74dp"
-                    android:src="@drawable/img_banh_mi_cuon_xuc_xich" />
+                    android:src="@drawable/img_avatar_default" />
 
                 <TextView
                     android:id="@+id/txtTenNguoiDungProfile"
@@ -90,8 +90,6 @@
                 android:background="@android:color/transparent"
                 android:elevation="1dp"
                 android:src="@drawable/baseline_settings_24" />
-
-
         </FrameLayout>
 
         <LinearLayout
@@ -113,6 +111,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtSoLikeProfile"
                     android:textColor="@color/black"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -127,7 +126,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="16sp"
-                    android:text="Đánh giá"
+                    android:text="Like"
                     android:textStyle="normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -135,12 +134,13 @@
 
             <LinearLayout
                 android:id="@+id/profile_tips"
-                android:layout_width="40dp"
+                android:layout_width="60dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtSoBinhLuanProfile"
                     android:textColor="@color/black"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -154,7 +154,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="16sp"
-                    android:text="Mẹo"
+                    android:text="Bình luận"
                     android:textColor="@color/primary_black_a80"
                     android:textStyle="normal"
                     android:layout_width="wrap_content"

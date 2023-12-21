@@ -30,7 +30,7 @@ public class ProfileFragment extends Fragment {
     private BottomNavigationView profileNav;
     private ViewPager2 profileViewPager2;
     private ImageButton ibtnSetting, ibtnAuthor;
-    TextView txtTenNguoiDung;
+    TextView txtTenNguoiDung, txtSoLike, txtSoBinhLuan;
     CircleImageView cirAvatar;
 
     private LinearLayout myRated, myTips;
@@ -54,6 +54,9 @@ public class ProfileFragment extends Fragment {
         txtTenNguoiDung = (TextView) view.findViewById(R.id.txtTenNguoiDungProfile);
         cirAvatar = (CircleImageView) view.findViewById(R.id.cirAvatar);
 
+        txtSoLike = (TextView) view.findViewById(R.id.txtSoLikeProfile);
+        txtSoBinhLuan = (TextView) view.findViewById(R.id.txtSoBinhLuanProfile);
+
         ibtnAuthor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +68,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyRatedActivity.class);
+                intent.putExtra("maNguoiDung", maNguoiDung);
                 startActivity(intent);
             }
         });
@@ -72,6 +76,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyTipsActivity.class);
+                intent.putExtra("maNguoiDung", maNguoiDung);
                 startActivity(intent);
             }
         });
@@ -147,6 +152,18 @@ public class ProfileFragment extends Fragment {
 
                     Picasso.get().load(avatar).into(cirAvatar);
                     txtTenNguoiDung.setText(tenNguoiDung);
+
+                    DataSnapshot likeSnapshot = snapshot.child("Like");
+                    if (likeSnapshot.exists()) {
+                        long countLikes = likeSnapshot.getChildrenCount();
+                        txtSoLike.setText(String.valueOf(countLikes));
+                    }
+
+                    DataSnapshot binhLuanSnapshot = snapshot.child("BinhLuan");
+                    if (binhLuanSnapshot.exists()) {
+                        long countBinhLuan = binhLuanSnapshot.getChildrenCount();
+                        txtSoBinhLuan.setText(String.valueOf(countBinhLuan));
+                    }
                 }
             }
 

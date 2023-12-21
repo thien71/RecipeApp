@@ -35,7 +35,7 @@
             android:layout_weight="6"
             android:layout_gravity="center|center_vertical"
             android:gravity="center"
-            android:text="Mẹo của tôi"
+            android:text="Bình luận của tôi"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/black"

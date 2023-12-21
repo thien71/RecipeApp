@@ -5,9 +5,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +23,8 @@ public class MyTipsActivity extends AppCompatActivity {
     private RecyclerView rcvMyTips;
     private MyTipsAdapter myTipsAdapter;
     private ImageButton ibtnBack;
+    List<MyTips> binhLuanList;
+    private int maNguoiDung;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +33,7 @@ public class MyTipsActivity extends AppCompatActivity {
 
         rcvMyTips = (RecyclerView) findViewById(R.id.rcvMyTips);
         ibtnBack = (ImageButton) findViewById(R.id.ibtnBackMyTips);
+
         ibtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,35 +41,62 @@ public class MyTipsActivity extends AppCompatActivity {
             }
         });
 
-//        myTipsAdapter = new MyTipsAdapter();
-        LinearLayoutManager myTipsLinearLayoutManager = new LinearLayoutManager(this);
+        Intent intent = getIntent();
+        maNguoiDung = intent.getIntExtra("maNguoiDung", 1);
 
-        rcvMyTips.setLayoutManager(myTipsLinearLayoutManager);
-        rcvMyTips.setFocusable(false);
-        rcvMyTips.setNestedScrollingEnabled(false);
+        binhLuanList = new ArrayList<>();
+        fetchBinhLuanList();
 
-//        myTipsAdapter.setMyTipsList(getListMyTips());
-//
-        rcvMyTips.setAdapter(myTipsAdapter);
+    }
 
-        myTipsAdapter.setOnItemClickListener(new RecyclerViewItemClickListener() {
+    private void fetchBinhLuanList() {
+        DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("BinhLuan");
+
+        nguoiDungRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onItemClick(int position) {
-                MyTips selectMyTips = myTipsAdapter.getItem(position);
-                Intent intent = new Intent(MyTipsActivity.this, DetailActivity.class);
-                intent.putExtra("idTenMon", selectMyTips.getTen());
-                intent.putExtra("idHinh", selectMyTips.getHinh());
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot binhLuanSnapshot : snapshot.getChildren()) {
+                    String noiDung = binhLuanSnapshot.child("noiDungBinhLuan").getValue(String.class);
+                    String thoiGian = binhLuanSnapshot.child("ngayTao").getValue(String.class);
+
+                    Object rawValue = binhLuanSnapshot.child("maBaiDang").getValue();
+                    if (rawValue != null) {
+                        try {
+                            int maBaiDang = Integer.parseInt(String.valueOf(rawValue));
+                            DatabaseReference baiDangRef = FirebaseDatabase.getInstance().getReference("BaiDangCongDong").child(String.valueOf(maBaiDang));
+
+                            baiDangRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot baiDangSnapshot) {
+                                    if (baiDangSnapshot.exists()) {
+                                        String tieuDe = baiDangSnapshot.child("tieuDe").getValue(String.class);
+                                        binhLuanList.add(new MyTips(noiDung, tieuDe, thoiGian));
+                                        setupRecyclerViewMyTips();
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
-//    private List<MyTips> getListMyTips() {
-//        List<MyTips> arrayMyTips = new ArrayList<>();
-//
-//        arrayMyTips.add(new MyTips("Tôi nghĩ nên để nó sôi thêm 5 phút nữa.", 0, "Súp bánh bao chay", "3 giờ trước"));
-//        arrayMyTips.add(new MyTips("Tôi nghĩ bạn đã cho thừa đường.", 0, "Bánh phô mai", "8 giờ trước", R.drawable.img_banh_pho_mai));
-//
-//        return arrayMyTips;
-//    }
+    private void setupRecyclerViewMyTips() {
+        LinearLayoutManager binhLuanLayoutManager = new LinearLayoutManager(MyTipsActivity.this);
+        rcvMyTips.setLayoutManager(binhLuanLayoutManager);
+        rcvMyTips.setFocusable(false);
+        rcvMyTips.setNestedScrollingEnabled(false);
+        myTipsAdapter = new MyTipsAdapter(binhLuanList);
+        rcvMyTips.setAdapter(myTipsAdapter);
+    }
 }

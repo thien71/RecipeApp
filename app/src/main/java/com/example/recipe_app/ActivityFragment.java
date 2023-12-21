@@ -116,9 +116,7 @@ public class ActivityFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle onCancelled
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
@@ -161,9 +159,7 @@ public class ActivityFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle onCancelled
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
     private void setupRecyclerViewMyRated() {

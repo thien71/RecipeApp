@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
     Button btnLogin, btnSignup;
-    EditText edtMatKhau, edtTaiKhoan, edtXacNhan;
+    EditText edtMatKhau, edtTaiKhoan, edtXacNhan, edtTenNguoiDung;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +31,7 @@ public class SignupActivity extends AppCompatActivity {
         edtTaiKhoan = (EditText) findViewById(R.id.edtTaiKhoanSignup);
         edtMatKhau = (EditText) findViewById(R.id.edtMatKhauSignup);
         edtXacNhan = (EditText) findViewById(R.id.edtXacNhanMatKhau);
+        edtTenNguoiDung = (EditText) findViewById(R.id.edtTenNguoiDungSignup);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignup = (Button) findViewById(R.id.btnSignup);
 
@@ -45,6 +46,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String taiKhoan = edtTaiKhoan.getText().toString().trim();
+                String tenNguoiDung = edtTenNguoiDung.getText().toString().trim();
                 String matKhau = edtMatKhau.getText().toString().trim();
                 String xacNhanMatKhau = edtXacNhan.getText().toString().trim();
 
@@ -68,12 +70,14 @@ public class SignupActivity extends AppCompatActivity {
                         }
                         if (!isUserExists) {
                             int maNguoiDung = Integer.valueOf((int) (dataSnapshot.getChildrenCount() + 1));
-                            NguoiDung nguoiDung = new NguoiDung(maNguoiDung, taiKhoan, taiKhoan, matKhau, "android.resource://com.example.recipe_app/drawable/img_avatar_default" , 0);
+                            NguoiDung nguoiDung = new NguoiDung(maNguoiDung, tenNguoiDung, taiKhoan, matKhau, "android.resource://com.example.recipe_app/drawable/img_avatar_default" , 0);
                             usersRef.child(String.valueOf(maNguoiDung)).setValue(nguoiDung);
 
                             Toast.makeText(SignupActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                            intent.putExtra("taiKhoan", taiKhoan);
+                            intent.putExtra("matKhau", matKhau);
                             startActivity(intent);
                             finish();
                         }

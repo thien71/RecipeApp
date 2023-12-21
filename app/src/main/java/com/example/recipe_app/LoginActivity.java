@@ -2,8 +2,11 @@ package com.example.recipe_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 public class LoginActivity extends AppCompatActivity {
     EditText edtMatKhau, edtTaiKhoan;
     Button btnLogin, btnSignup;
+    CheckBox ckbHienMatKhau;
+    boolean matKhauBiAn = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +34,25 @@ public class LoginActivity extends AppCompatActivity {
         edtMatKhau = (EditText) findViewById(R.id.edtMatKhau);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignup = (Button) findViewById(R.id.btnSignup);
+        ckbHienMatKhau = (CheckBox) findViewById(R.id.ckbHienMatKhau);
+
+        Intent intent = getIntent();
+        edtTaiKhoan.setText(intent.getStringExtra("taiKhoan"));
+        edtMatKhau.setText(intent.getStringExtra("matKhau"));
+
+        ckbHienMatKhau.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    edtMatKhau.setInputType(InputType.TYPE_CLASS_TEXT);
+                    matKhauBiAn = false;
+                } else {
+                    edtMatKhau.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    matKhauBiAn = true;
+                }
+                edtMatKhau.setSelection(edtMatKhau.getText().length());
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

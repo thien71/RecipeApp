@@ -47,7 +47,21 @@
             android:id="@+id/edtTaiKhoanSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tên tài khoản"
+            android:hint="Tài khoản"
+            android:layout_gravity="center"
+            android:gravity="left"
+            android:inputType="text"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/background_cor8_sowhite_stro1pink_pad4_8"
+            android:padding="12dp"/>
+
+        <EditText
+            android:id="@+id/edtTenNguoiDungSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tên người dùng"
             android:layout_gravity="center"
             android:gravity="left"
             android:inputType="text"
@@ -133,7 +147,7 @@
 
         </LinearLayout>
         <Button
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="40dp"
             android:id="@+id/btnLogin"
             android:textSize="16dp"
             android:text="Đăng nhập"
