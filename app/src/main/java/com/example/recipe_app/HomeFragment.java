@@ -18,6 +18,7 @@ import com.example.recipe_app.adapter.HomeCommunityAdapter;
 import com.example.recipe_app.adapter.HomeRecommendedAdapter;
 import com.example.recipe_app.adapter.HomeTrendingAdapter;
 import com.example.recipe_app.model.Community;
+import com.example.recipe_app.model.HomeRecommended;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -199,6 +200,7 @@ public class HomeFragment extends Fragment {
                     HomeRecommended selectHomeRecommended = homeRecommendedAdapter.getItem(position);
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra("maCongThuc", selectHomeRecommended.getMaCongThuc());
+                    intent.putExtra("maNguoiDung", maNguoiDung);
                     startActivity(intent);
                 }
             });

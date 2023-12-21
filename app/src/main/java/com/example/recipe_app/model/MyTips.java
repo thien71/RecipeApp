@@ -1,11 +1,13 @@
-package com.example.recipe_app;
+package com.example.recipe_app.model;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MyTips {
     private String content;
     private String ten;
     private String time;
     private int hinh;
-
 
 
     public MyTips(String content, String ten, String time) {

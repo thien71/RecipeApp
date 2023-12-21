@@ -1,9 +1,14 @@
-package com.example.recipe_app;
+package com.example.recipe_app.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.recipe_app.ActivityFragment;
+import com.example.recipe_app.CookbooksFragment;
+import com.example.recipe_app.ProfileFragment;
+import com.example.recipe_app.SavedFragment;
 
 public class ProfilePagerAdapter extends FragmentStateAdapter {
     private int maNguoiDung;

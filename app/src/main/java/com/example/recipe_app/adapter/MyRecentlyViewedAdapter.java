@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recipe_app.MyRecentlyViewed;
+import com.example.recipe_app.model.MyRecentlyViewed;
 import com.example.recipe_app.R;
 import com.example.recipe_app.RecyclerViewItemClickListener;
 
@@ -66,9 +66,9 @@ public class MyRecentlyViewedAdapter extends RecyclerView.Adapter<MyRecentlyView
         }
     }
 
-    private RecyclerViewItemClickListener itemClickListener; // Biến để lưu trữ người nghe
+    private RecyclerViewItemClickListener itemClickListener;
 
     public void setOnItemClickListener(RecyclerViewItemClickListener listener) {
-        this.itemClickListener = listener; // Phương thức để thiết lập người nghe
+        this.itemClickListener = listener;
     }
 }

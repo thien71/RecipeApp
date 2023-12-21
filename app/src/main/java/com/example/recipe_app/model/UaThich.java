@@ -5,30 +5,16 @@ import java.util.Date;
 
 public class UaThich {
     private int maNguoiDung;
-    private int maUaThich;
     private int maCongThuc;
+    private int maUaThich;
     private String ngayThem;
 
     public UaThich() {
     }
 
-    public UaThich(int maNguoiDung, int maCongThuc) {
-        this.maNguoiDung = maNguoiDung;
+    public UaThich(int maCongThuc, int maUaThich) {
         this.maCongThuc = maCongThuc;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        this.ngayThem = sdf.format(new Date());
-    }
-
-    public UaThich(int maCongThuc) {
-        this.maCongThuc = maCongThuc;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        this.ngayThem = sdf.format(new Date());
-    }
-
-    public UaThich(int maNguoiDung, int maUaThich, int maCongThuc) {
-        this.maNguoiDung = maNguoiDung;
         this.maUaThich = maUaThich;
-        this.maCongThuc = maCongThuc;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         this.ngayThem = sdf.format(new Date());
     }

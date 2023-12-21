@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recipe_app.HomeRecommended;
+import com.example.recipe_app.model.HomeRecommended;
 import com.example.recipe_app.R;
 import com.example.recipe_app.RecyclerViewItemClickListener;
 import com.squareup.picasso.Picasso;

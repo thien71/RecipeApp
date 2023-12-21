@@ -1,9 +1,8 @@
-package com.example.recipe_app;
+package com.example.recipe_app.model;
 
 public class HomeRecommended {
     private int maCongThuc;
     private String hinh;
-//    private int hinh;
     private String ten;
 
     public HomeRecommended(int maCongThuc, String hinh, String ten) {

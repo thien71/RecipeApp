@@ -10,7 +10,7 @@ public class BinhLuan {
     private String tenNguoiDung;
     private String avatar;
     private String noiDungBinhLuan;
-    private String ngayBinhLuan;
+    private String ngayTao;
     private String ngayCapNhat;
 
     public BinhLuan() {
@@ -39,7 +39,7 @@ public class BinhLuan {
         this.maBinhLuan = maBinhLuan;
         this.noiDungBinhLuan = noiDungBinhLuan;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        this.ngayBinhLuan = sdf.format(new Date());
+        this.ngayTao = sdf.format(new Date());
         this.ngayCapNhat = sdf.format(new Date());
     }
 
@@ -83,12 +83,12 @@ public class BinhLuan {
         this.maBaiDang = maBaiDang;
     }
 
-    public String getNgayBinhLuan() {
-        return ngayBinhLuan;
+    public String getNgayTao() {
+        return ngayTao;
     }
 
-    public void setNgayBinhLuan(String ngayBinhLuan) {
-        this.ngayBinhLuan = ngayBinhLuan;
+    public void setNgayTao(String ngayTao) {
+        this.ngayTao = ngayTao;
     }
 
     public String getTenNguoiDung() {

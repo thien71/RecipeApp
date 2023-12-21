@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefreshSaved"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    tools:context=".SavedFragment">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/search_bar_Saved"
-        android:background="@drawable/search_background"
-        android:layout_margin="16dp"
-        android:orientation="horizontal"
-        android:padding="8dp"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        tools:context=".SavedFragment">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:elevation="1dp"
-            android:rotation="90"
-            android:src="@drawable/baseline_search_24" />
-
-        <TextView
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Tìm kiếm công thức đã lưu"
-            android:textSize="16dp"
-            android:textColor="@color/primary_black_a70"
+        <LinearLayout
+            android:id="@+id/search_bar_Saved"
+            android:background="@drawable/search_background"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            android:padding="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:elevation="1dp"
+                android:rotation="90"
+                android:src="@drawable/baseline_search_24" />
+
+            <TextView
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Tìm kiếm công thức đã lưu"
+                android:textSize="16dp"
+                android:textColor="@color/primary_black_a70"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvUaThich"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvUaThich"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-</LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

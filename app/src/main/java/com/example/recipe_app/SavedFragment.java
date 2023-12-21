@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.recipe_app.adapter.UaThichAdapter;
 import com.example.recipe_app.model.CongThuc;
@@ -29,7 +30,7 @@ public class SavedFragment extends Fragment {
     UaThichAdapter uaThichAdapter;
     RecyclerView rcvUaThich;
     private LinearLayout search_bar_Saved;
-
+    private SwipeRefreshLayout swipeRefreshSaved;
     private int maNguoiDung;
     public static SavedFragment newInstance(int maNguoiDung) {
         SavedFragment fragment = new SavedFragment();
@@ -45,11 +46,36 @@ public class SavedFragment extends Fragment {
 
         rcvUaThich = (RecyclerView) view.findViewById(R.id.rcvUaThich);
         search_bar_Saved = (LinearLayout) view.findViewById(R.id.search_bar_Saved);
+        swipeRefreshSaved = view.findViewById(R.id.swipeRefreshSaved);
+
 
         if (getArguments() != null) {
             maNguoiDung = getArguments().getInt("maNguoiDung", 1);
         }
 
+        LoadListSaved();
+
+        swipeRefreshSaved.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                LoadListSaved();
+                swipeRefreshSaved.setRefreshing(false);
+            }
+        });
+
+        // search
+        search_bar_Saved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        return view;
+    }
+
+    private void LoadListSaved() {
         DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("UaThich");
         nguoiDungRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -83,17 +109,6 @@ public class SavedFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
-        // search
-        search_bar_Saved.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SearchActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        return view;
     }
     private void setupRecyclerView() {
         GridLayoutManager uaThichLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -113,4 +128,12 @@ public class SavedFragment extends Fragment {
             }
         });
     }
+
+//    public void onScrollToTop() {
+//        if (swipeRefreshSaved != null) {
+//            swipeRefreshSaved.setRefreshing(true);
+//            LoadListSaved();
+//            swipeRefreshSaved.postDelayed(() -> swipeRefreshSaved.setRefreshing(false), 1000);
+//        }
+//    }
 }

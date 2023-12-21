@@ -25,6 +25,7 @@ import com.example.recipe_app.adapter.NguyenLieuAdapter;
 import com.example.recipe_app.model.BuocThucHien;
 import com.example.recipe_app.model.NguyenLieu;
 import com.example.recipe_app.model.ThongTinDinhDuong;
+import com.example.recipe_app.model.UaThich;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +35,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DetailActivity extends AppCompatActivity {
     ImageView imgHinh;
@@ -50,6 +52,8 @@ public class DetailActivity extends AppCompatActivity {
     NguyenLieuAdapter nguyenLieuAdapter;
 
     int calo, protein, carbohydrate, chatBeo;
+    private int maNguoiDung;
+    boolean isFavorite = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +134,30 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        // Set Tym
+        maNguoiDung = getIntent().getIntExtra("maNguoiDung", 1);
+        DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("UaThich");
+
+        nguoiDungRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot uaThichSnapshot : dataSnapshot.getChildren()) {
+                    int maCongThucNguoiDung = uaThichSnapshot.child("maCongThuc").getValue(Integer.class);
+                    if (maCongThucNguoiDung == maCongThuc) {
+                        isFavorite = true;
+                        break;
+                    }
+                }
+                if (isFavorite) {
+                    ibtnTymDetail.setImageResource(R.drawable.baseline_favorite_24);
+                } else {
+                    ibtnTymDetail.setImageResource(R.drawable.baseline_favorite_border_24);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
 
         ibtnBackDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,17 +167,41 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         ibtnTymDetail.setOnClickListener(new View.OnClickListener() {
-            boolean isTym = false;
             @Override
             public void onClick(View v) {
-                if(isTym) {
-                    ibtnTymDetail.setImageResource(R.drawable.baseline_favorite_border_24);
+                DatabaseReference uaThichRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("UaThich");
+
+                if (isFavorite) {
+                    uaThichRef.orderByChild("maCongThuc").equalTo(maCongThuc).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                snapshot.getRef().removeValue();
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                    });
                 } else {
-                    ibtnTymDetail.setImageResource(R.drawable.baseline_favorite_24);
+                    int min = 9;
+                    int max = 1000;
+
+                    int maUaThich = new Random().nextInt(max - min + 1) + min;
+                    UaThich uaThich = new UaThich(maCongThuc, maUaThich);
+
+                    uaThichRef.push().setValue(uaThich);
+
                 }
-                isTym = !isTym;
+                isFavorite = !isFavorite;
+
+                if (isFavorite) {
+                    ibtnTymDetail.setImageResource(R.drawable.baseline_favorite_24);
+                } else {
+                    ibtnTymDetail.setImageResource(R.drawable.baseline_favorite_border_24);
+                }
             }
         });
+
         ibtnGiamSoLuong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

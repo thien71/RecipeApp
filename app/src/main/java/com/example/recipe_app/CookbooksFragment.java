@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.recipe_app.adapter.CookbooksAdapter;
 import com.example.recipe_app.model.Cookbooks;
@@ -30,7 +31,7 @@ public class CookbooksFragment extends Fragment {
     ArrayList<Cookbooks> danhMucDaLuuList;
     CookbooksAdapter danhMucDaLuuAdapter;
     DatabaseReference danhMucRef, congThucRef;
-
+    private SwipeRefreshLayout swipeRefreshCookbook;
     private int maNguoiDung;
     public static CookbooksFragment newInstance(int maNguoiDung) {
         CookbooksFragment fragment = new CookbooksFragment();
@@ -44,11 +45,26 @@ public class CookbooksFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cookbooks, container, false);
 
         rcvDanhMuc = (RecyclerView) view.findViewById(R.id.rcvDanhMuc);
+        swipeRefreshCookbook = view.findViewById(R.id.swipeRefreshCookbook);
 
         if (getArguments() != null) {
             maNguoiDung = getArguments().getInt("maNguoiDung", 1);
         }
 
+        LoadListCookbook();
+
+        swipeRefreshCookbook.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                LoadListCookbook();
+                swipeRefreshCookbook.setRefreshing(false);
+            }
+        });
+
+        return view;
+    }
+
+    private void LoadListCookbook() {
         danhMucRef = FirebaseDatabase.getInstance().getReference("DanhMucCongThuc");
         DatabaseReference uaThichRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("UaThich");
 
@@ -106,10 +122,8 @@ public class CookbooksFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
-
-        return view;
     }
+
     private void setupRecyclerView() {
         LinearLayoutManager danhMucLayoutManager = new LinearLayoutManager(getActivity());
         rcvDanhMuc.setLayoutManager(danhMucLayoutManager);

@@ -36,7 +36,7 @@
             android:layout_weight="6"
             android:layout_gravity="center|center_vertical"
             android:gravity="center"
-            android:text="Bánh mì xúc xích"
+            android:text="                "
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -100,7 +100,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:gravity="left"
-                    android:text="Bánh mì xúc xích"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -113,48 +113,10 @@
                     android:layout_marginBottom="16dp"
                     android:gravity="left"
                     android:lineSpacingExtra="2dp"
-                    android:text="Bánh mì quấn xúc xích là món ăn cổ điển trong bữa tiệc không bao giờ lỗi mốt. Những chiếc bánh ngọt ấm áp và xốp được quấn quanh một chiếc xúc xích thơm ngon, tạo nên món ăn nhẹ cầm tay hoàn hảo, chúng rất dễ làm và luôn được nhiều người yêu thích"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     android:textStyle="normal" />
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_vertical"-->
-<!--                    android:layout_marginTop="8dp"-->
-<!--                    android:gravity="center_vertical"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <ImageButton-->
-<!--                        android:id="@+id/ibtnSoLikeDetail"-->
-<!--                        android:layout_width="12dp"-->
-<!--                        android:layout_height="12dp"-->
-<!--                        android:layout_gravity="center_vertical|right"-->
-<!--                        android:layout_marginRight="8dp"-->
-<!--                        android:background="@android:color/transparent"-->
-<!--                        android:src="@drawable/baseline_thumb_up_off_alt_24" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/txtSoLikeDetail"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center_vertical"-->
-<!--                        android:text="10"-->
-<!--                        android:layout_marginRight="16dp"-->
-<!--                        android:textColor="@color/primary_black_a80"-->
-<!--                        android:textSize="14sp"-->
-<!--                        android:textStyle="bold" />-->
-
-<!--                    <ImageButton-->
-<!--                        android:id="@+id/ibtnSoDislike"-->
-<!--                        android:layout_width="12dp"-->
-<!--                        android:layout_height="12dp"-->
-<!--                        android:layout_gravity="center_vertical|right"-->
-<!--                        android:rotation="180"-->
-<!--                        android:background="@android:color/transparent"-->
-<!--                        android:src="@drawable/baseline_thumb_up_off_alt_24" />-->
-<!--                </LinearLayout>-->
 
             </LinearLayout>
 
@@ -162,27 +124,6 @@
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
                 android:layout_height="218dp" />
-
-            <!--            <FrameLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/imgHinhDetail"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="218dp"-->
-<!--                    android:foreground="@color/primary_black_a50"-->
-<!--                    android:scaleType="centerCrop"-->
-<!--                    android:src="@drawable/img_banh_mi_cuon_xuc_xich" />-->
-
-<!--                <ImageButton-->
-<!--                    android:id="@+id/ibtnPlayVideo"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_vertical|center"-->
-<!--                    android:background="@drawable/background_play_video"-->
-<!--                    android:src="@drawable/baseline_play_circle_filled_48" />-->
-<!--            </FrameLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"

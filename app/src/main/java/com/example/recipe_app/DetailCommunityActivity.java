@@ -41,7 +41,7 @@ public class DetailCommunityActivity extends AppCompatActivity {
     EditText edtBinhLuan;
     CircleImageView cirAvatar;
     ImageView imgHinh;
-    ImageButton ibtnBack, ibtnGuiBinhLuan;
+    ImageButton ibtnBack, ibtnGuiBinhLuan, ibtnLike;
     RecyclerView rcvBinhLuan;
     List<BinhLuan> binhLuanList;
     BinhLuanAdapter binhLuanAdapter;
@@ -52,6 +52,9 @@ public class DetailCommunityActivity extends AppCompatActivity {
     private int selectedPosition = -1;
     private static final int MENU_EDIT = 0;
     private static final int MENU_DELETE = 1;
+
+    private int soBinhLuan;
+    boolean isLike = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,27 @@ public class DetailCommunityActivity extends AppCompatActivity {
             }
         });
 
+        ibtnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isLike) {
+                    Intent intent = getIntent();
+                    if (intent != null) {
+                        BaiDangCongDong baiDangItem = (BaiDangCongDong) intent.getSerializableExtra("baiDangItem");
+                        txtSoLike.setText(String.valueOf(baiDangItem.getSoLike()));
+                    }
+                    ibtnLike.setImageResource(R.drawable.baseline_thumb_up_off_alt_12_black);
+                } else {
+                    Intent intent = getIntent();
+                    if (intent != null) {
+                        BaiDangCongDong baiDangItem = (BaiDangCongDong) intent.getSerializableExtra("baiDangItem");
+                        txtSoLike.setText(String.valueOf(baiDangItem.getSoLike() + 1));
+                    }
+                    ibtnLike.setImageResource(R.drawable.baseline_thumb_up_alt_24);
+                }
+                isLike = !isLike;
+            }
+        });
     }
 
     private void setupRecyclerView() {
@@ -153,9 +177,7 @@ public class DetailCommunityActivity extends AppCompatActivity {
         builder.show();
     }
     private void suaNoiDungBinhLuan(int maBinhLuan, String noiDungMoi) {
-        DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung")
-                .child(String.valueOf(maNguoiDung))
-                .child("BinhLuan");
+        DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("BinhLuan");
 
         nguoiDungRef.orderByChild("maBinhLuan").equalTo(maBinhLuan).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -170,8 +192,10 @@ public class DetailCommunityActivity extends AppCompatActivity {
 
             }
         });
-        binhLuanList.get(maBinhLuan).setNoiDungBinhLuan(noiDungMoi);
-        binhLuanAdapter.notifyItemChanged(maBinhLuan);
+
+        loadComments();
+//        binhLuanList.get(maBinhLuan).setNoiDungBinhLuan(noiDungMoi);
+//        binhLuanAdapter.notifyItemChanged(maBinhLuan);
     }
 
     private void xoaBinhLuan(int position) {
@@ -179,10 +203,7 @@ public class DetailCommunityActivity extends AppCompatActivity {
             binhLuanList.remove(position);
             binhLuanAdapter.notifyItemRemoved(position);
 
-            DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung")
-                    .child(String.valueOf(maNguoiDung))
-                    .child("BinhLuan");
-
+            DatabaseReference nguoiDungRef = FirebaseDatabase.getInstance().getReference("NguoiDung").child(String.valueOf(maNguoiDung)).child("BinhLuan");
             nguoiDungRef.orderByChild("maBinhLuan").equalTo(maBinhLuanToRemove).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -211,14 +232,14 @@ public class DetailCommunityActivity extends AppCompatActivity {
                         // Giảm số lượng bình luận đi 1 sau khi xóa
                         baiDangRef.child("soBinhLuan").setValue(soBinhLuan - 1);
 
-                        loadComments();
+                        //loadComments();
+
+                        soBinhLuan--;
+                        txtSoBinhLuan.setText(String.valueOf(soBinhLuan));
                     }
                 }
-
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
             });
 
             maBinhLuanToRemove = -1;
@@ -241,6 +262,7 @@ public class DetailCommunityActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 binhLuanList = new ArrayList<>();
+                soBinhLuan = 0;
                 for (DataSnapshot nguoiDungSnapshot : snapshot.getChildren()) {
                     DataSnapshot binhLuanSnapshot = nguoiDungSnapshot.child("BinhLuan");
                     for (DataSnapshot binhLuanItem : binhLuanSnapshot.getChildren()) {
@@ -254,9 +276,12 @@ public class DetailCommunityActivity extends AppCompatActivity {
 
                             BinhLuan binhLuan = new BinhLuan(maNguoiDung, maBinhLuan ,tenNguoiDung, avatar, noiDungBinhLuan);
                             binhLuanList.add(binhLuan);
+
+                            soBinhLuan++;
                         }
                     }
                 }
+                txtSoBinhLuan.setText(String.valueOf(soBinhLuan));
                 setupRecyclerView();
             }
 
@@ -347,6 +372,8 @@ public class DetailCommunityActivity extends AppCompatActivity {
         txtTenMon = findViewById(R.id.txtTenMonDetailCommunity);
         txtNoiDung = findViewById(R.id.txtNoiDungDetailCommunity);
         txtSoLike = findViewById(R.id.txtSoLikeDetailCommunity);
+        ibtnLike = findViewById(R.id.ibtnLikeDetailCommunity);
+
         txtSoBinhLuan = findViewById(R.id.txtSoBinhLuanDetailCommunity);
 
         txtTenTieuDe = findViewById(R.id.txtTenTieuDeDetailCommunity);

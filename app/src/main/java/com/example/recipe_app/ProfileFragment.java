@@ -1,9 +1,7 @@
 package com.example.recipe_app;
 
 import android.content.Intent;
-import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.recipe_app.adapter.ProfilePagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +33,7 @@ public class ProfileFragment extends Fragment {
     TextView txtTenNguoiDung, txtSoLike, txtSoBinhLuan;
     CircleImageView cirAvatar;
 
+    private SwipeRefreshLayout swipeRefreshProfile;
     private LinearLayout myRated, myTips;
     private int maNguoiDung;
     public static ProfileFragment newInstance(int maNguoiDung) {
@@ -56,6 +57,16 @@ public class ProfileFragment extends Fragment {
 
         txtSoLike = (TextView) view.findViewById(R.id.txtSoLikeProfile);
         txtSoBinhLuan = (TextView) view.findViewById(R.id.txtSoBinhLuanProfile);
+
+        swipeRefreshProfile = view.findViewById(R.id.swipeRefreshProfile);
+
+        swipeRefreshProfile.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                LoadNguoiDungData();
+                swipeRefreshProfile.setRefreshing(false);
+            }
+        });
 
         ibtnAuthor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +132,15 @@ public class ProfileFragment extends Fragment {
                         break;
                 }
             }
+//            public void onPageSelected(int position) {
+//                super.onPageSelected(position);
+//                if (position == 0) {
+//                    SavedFragment savedFragment = getSavedFragment();
+//                    if (savedFragment != null) {
+//                        savedFragment.onScrollToTop();
+//                    }
+//                }
+//            }
         });
         profileNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -172,5 +192,12 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
+    private SavedFragment getSavedFragment() {
+        ProfilePagerAdapter adapter = (ProfilePagerAdapter) profileViewPager2.getAdapter();
+        if (adapter != null && adapter.getItemCount() > 0) {
+            return (SavedFragment) adapter.createFragment(0);
+        }
+        return null;
     }
 }

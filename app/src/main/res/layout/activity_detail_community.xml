@@ -76,7 +76,6 @@
                         <ImageView
                             android:id="@+id/imgHinhDetailCommunity"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/img_banh_pho_mai"
                             android:layout_width="match_parent"
                             android:layout_height="218dp"/>
                     </FrameLayout>
@@ -99,7 +98,6 @@
                                 android:id="@+id/civAvatarDetailCommunity"
                                 android:layout_width="46dp"
                                 android:background="@drawable/background_avatar"
-                                android:src="@drawable/img_banh_mi_cuon_xuc_xich"
                                 android:layout_height="46dp"/>
 
                             <LinearLayout
